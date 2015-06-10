@@ -1,4 +1,4 @@
-jackal_robot
+ridgeback_robot
 ============
 
-Robot packages for Jackal
+Robot packages for Ridgeback

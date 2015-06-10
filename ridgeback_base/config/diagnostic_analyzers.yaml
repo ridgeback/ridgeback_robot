@@ -1,0 +1,31 @@
+analyzers:
+  ridgeback:
+    type: diagnostic_aggregator/AnalyzerGroup
+    path: Ridgeback Base
+    analyzers:
+      general:
+        type: diagnostic_aggregator/GenericAnalyzer
+        path: General
+        remove_prefix: 'ridgeback_node'
+        timeout: 5.0
+        expected: [
+          'ridgeback_node: General',
+          'ridgeback_node: Battery',
+          'ridgeback_node: User voltage supplies',
+          'ridgeback_node: Current consumption',
+          'ridgeback_node: Power consumption' ]
+      sensors:
+        type: diagnostic_aggregator/GenericAnalyzer
+        path: Sensor Topics
+        remove_prefix: 'ridgeback_node'
+        timeout: 5.0
+        expected: [
+          'ridgeback_node: /imu/data_raw topic status',
+          'ridgeback_node: /navsat/nmea_sentence topic status' ]
+      teleop:
+        type: diagnostic_aggregator/GenericAnalyzer
+        path: Bluetooth Joystick
+        remove_prefix: 'bluetooth_teleop/joy_node'
+        timeout: 5.0
+        expected: [
+          'bluetooth_teleop/joy_node: Joystick Driver Status' ]
