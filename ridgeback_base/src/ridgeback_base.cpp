@@ -81,7 +81,7 @@ void controlThread(ros::Rate rate, ridgeback_base::RidgebackHardware* robot, con
   }
 }
 
-void canThread(ros::Rate rate, puma_motor_driver::Gateway* gateway, ridgeback_base::RidgebackHardware* robot)
+void canThread(ros::Rate rate, ridgeback_base::RidgebackHardware* robot)
 {
   while (1)
   {
@@ -106,7 +106,7 @@ int main(int argc, char* argv[])
   // Configure the CAN connection
   // ridgeback.init();
   // Create a thread to start reading can messages.
-  boost::thread canT(&canThread, ros::Rate(20), &gateway, &ridgeback);
+  boost::thread canT(&canThread, ros::Rate(20), &ridgeback);
 
   // Background thread for the controls callback.
   ros::NodeHandle controller_nh("");
