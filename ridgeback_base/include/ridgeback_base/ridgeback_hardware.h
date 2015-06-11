@@ -48,20 +48,43 @@
 namespace ridgeback_base
 {
 
-
 class RidgebackHardware : public hardware_interface::RobotHW
 {
+
+typedef void (puma_motor_driver::Driver::*requestFeedback)();
+
 public:
   RidgebackHardware(ros::NodeHandle& nh, ros::NodeHandle& pnh,
                     puma_motor_driver::Gateway& gateway);
+  void init();  // Connect to CAN
+  bool connectIfNotConnected();  // Keep trying till it connects
+
+  void configure();  // Configures the motor drivers
+  void verify();
+  bool isActive();
+
+  bool powerRest();  // Checks if power has been reset
+  bool inReset();  // Returns if the cm should be reset based on the state of the motors drivers.
+                   // If they have been configured.
+
+  void requestData();
   void updateJointsFromHardware();
   void command();
+
+
+  void canSend();
+  void canRead();
 
 private:
   ros::NodeHandle nh_, pnh_;
 
   puma_motor_driver::Gateway& gateway_;
   std::vector<puma_motor_driver::Driver> drivers_;
+  std::vector<requestFeedback> feedbacks_;
+
+  bool active_;
+  double gear_ratio_;
+  int encoder_cpr_;
 
   // ROS Control interfaces
   hardware_interface::JointStateInterface joint_state_interface_;
@@ -81,8 +104,6 @@ private:
   }
   joints_[4];
 
-  // This pointer will be set from the CAN thread.
-  puma_motor_msgs::MultiFeedback::ConstPtr feedback_msg_;
 };
 
 }  // namespace ridgeback_base
