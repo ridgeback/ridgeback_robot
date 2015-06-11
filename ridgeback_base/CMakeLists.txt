@@ -16,18 +16,19 @@ include_directories(include ${Boost_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS})
 add_executable(ridgeback_node
   src/ridgeback_base.cpp
   src/ridgeback_hardware.cpp
-  src/ridgeback_diagnostic_updater.cpp)
+  # src/ridgeback_diagnostic_updater.cpp
+  )
 target_link_libraries(ridgeback_node ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 add_dependencies(ridgeback_node ridgeback_msgs_gencpp rosserial_msgs_gencpp)
 
-add_executable(${PROJECT_NAME}_simple_joy_node src/simple_joy_node.cpp)
-target_link_libraries(${PROJECT_NAME}_simple_joy_node ${catkin_LIBRARIES})
-set_target_properties(${PROJECT_NAME}_simple_joy_node
-  PROPERTIES OUTPUT_NAME simple_joy_node PREFIX "")
-add_dependencies(${PROJECT_NAME}_simple_joy_node ridgeback_msgs_gencpp)
+#add_executable(${PROJECT_NAME}_simple_joy_node src/simple_joy_node.cpp)
+#target_link_libraries(${PROJECT_NAME}_simple_joy_node ${catkin_LIBRARIES})
+#set_target_properties(${PROJECT_NAME}_simple_joy_node
+#  PROPERTIES OUTPUT_NAME simple_joy_node PREFIX "")
+#add_dependencies(${PROJECT_NAME}_simple_joy_node ridgeback_msgs_gencpp)
 
-install(TARGETS ridgeback_node ${PROJECT_NAME}_simple_joy_node
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+#install(TARGETS ridgeback_node ${PROJECT_NAME}_simple_joy_node
+#  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 install(DIRECTORY launch config
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})

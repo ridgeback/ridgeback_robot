@@ -38,7 +38,7 @@
 
 
 #include "controller_manager/controller_manager.h"
-#include "ridgeback_base/ridgeback_diagnostic_updater.h"
+//#include "ridgeback_base/ridgeback_diagnostic_updater.h"
 #include "ridgeback_base/ridgeback_hardware.h"
 #include "ros/ros.h"
 

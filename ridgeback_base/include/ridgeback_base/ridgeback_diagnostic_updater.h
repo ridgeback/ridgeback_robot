@@ -38,7 +38,7 @@
 
 #include "diagnostic_updater/diagnostic_updater.h"
 #include "diagnostic_updater/publisher.h"
-#include "ridgeback_msgs/Status.h"
+#include "puma_motor_msgs/MultiStatus.h"
 #include "nmea_msgs/Sentence.h"
 #include "ros/ros.h"
 #include "sensor_msgs/Imu.h"
