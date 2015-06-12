@@ -67,9 +67,10 @@ RidgebackHardware::RidgebackHardware(ros::NodeHandle& nh, ros::NodeHandle& pnh,
   registerInterface(&joint_state_interface_);
   registerInterface(&velocity_joint_interface_);
 
-  feedbacks_.push_back(&puma_motor_driver::Driver::requestFeedbackPosition);
+  feedbacks_.push_back(&puma_motor_driver::Driver::requestFeedbackPowerState);
   feedbacks_.push_back(&puma_motor_driver::Driver::requestFeedbackSpeed);
-
+  feedbacks_.push_back(&puma_motor_driver::Driver::requestFeedbackPosition);
+  feedbacks_.push_back(&puma_motor_driver::Driver::requestFeedbackCurrent);
 
   pnh_.param<double>("gear_ratio", gear_ratio_, 79.0);
   pnh_.param<int>("encoder_cpr", encoder_cpr_, 1024);
@@ -77,8 +78,8 @@ RidgebackHardware::RidgebackHardware(ros::NodeHandle& nh, ros::NodeHandle& pnh,
   BOOST_FOREACH(puma_motor_driver::Driver& driver, drivers_)
   {
     driver.clearStatusCache();
-    driver.setEncoderCPR(gear_ratio_);
-    driver.setGearRatio(encoder_cpr_);
+    driver.setEncoderCPR(encoder_cpr_);
+    driver.setGearRatio(gear_ratio_);
     driver.setMode(puma_motor_msgs::Status::MODE_SPEED, -0.1, -0.01, 0.0);
   }
 }
@@ -104,36 +105,33 @@ void RidgebackHardware::updateJointsFromHardware()
 
 bool RidgebackHardware::isActive()
 {
-  if ( active_ == false
+  if (active_ == false
      && drivers_[0].isConfigured() == true
-     && drivers_[1].isConfigured() == true
+     //&& drivers_[1].isConfigured() == true
      && drivers_[2].isConfigured() == true
-     && drivers_[3].isConfigured() == true)
+     //&& drivers_[3].isConfigured() == true
+     )
   {
     active_ = true;
-    ROS_INFO("Active.");
+    ROS_INFO("Ridgeback Hardware Active.");
   }
 
   return active_;
 }
 
-void RidgebackHardware::requestData()
+void RidgebackHardware::requestData(int& feedback_item)
 {
-  BOOST_FOREACH(requestFeedback feedbackFc, feedbacks_)
+  BOOST_FOREACH(puma_motor_driver::Driver& driver, drivers_)
   {
-    BOOST_FOREACH(puma_motor_driver::Driver& driver, drivers_)
-    {
-      (driver.*feedbackFc)();
-    }
-    ros::Duration(0.001).sleep();
+    (driver.*feedbacks_[feedback_item])();
   }
 }
-bool RidgebackHardware::powerRest()
+bool RidgebackHardware::powerHasNotReset()
 {
   // Checks to see if power flag has been reset for each driver
   BOOST_FOREACH(puma_motor_driver::Driver& driver, drivers_)
   {
-    if ( driver.lastPower() != 0)
+    if (driver.lastPower() != 0)
     {
       active_ = false;
       ROS_WARN("There was a power rest on Dev: %d, will reconfigure all drivers.", driver.deviceNumber());
@@ -189,7 +187,6 @@ void RidgebackHardware::canRead()
 void RidgebackHardware::canSend()
 {
   gateway_.sendAllQueued();
-  ros::Duration(0.005).sleep();
 }
 
 bool RidgebackHardware::connectIfNotConnected()

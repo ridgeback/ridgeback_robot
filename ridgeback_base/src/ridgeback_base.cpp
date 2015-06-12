@@ -58,7 +58,7 @@ void controlThread(ros::Rate rate, ridgeback_base::RidgebackHardware* robot, con
 
     if (robot->isActive())
     {
-      robot->powerRest();
+      robot->powerHasNotReset();
       robot->updateJointsFromHardware();
     }
     else
@@ -71,7 +71,6 @@ void controlThread(ros::Rate rate, ridgeback_base::RidgebackHardware* robot, con
     if (robot->isActive())
     {
       robot->command();
-      robot->requestData();
     }
     else
     {
@@ -83,10 +82,18 @@ void controlThread(ros::Rate rate, ridgeback_base::RidgebackHardware* robot, con
 
 void canThread(ros::Rate rate, ridgeback_base::RidgebackHardware* robot)
 {
+  static int desired_feedback_item = 0;
   while (1)
   {
     robot->canRead();
+    robot->requestData(desired_feedback_item);
     robot->canSend();
+
+    desired_feedback_item++;
+    if (desired_feedback_item >= 4)
+    {
+      desired_feedback_item = 0;
+    }
     rate.sleep();
   }
 }
@@ -100,18 +107,17 @@ int main(int argc, char* argv[])
   std::string canbus_dev;
   pnh.param<std::string>("canbus_dev", canbus_dev, "can0");
   puma_motor_driver::SocketCANGateway gateway(canbus_dev);
-  boost::mutex gateway_mutex_;
 
   ridgeback_base::RidgebackHardware ridgeback(nh, pnh, gateway);
   // Configure the CAN connection
-  // ridgeback.init();
+  ridgeback.init();
   // Create a thread to start reading can messages.
-  boost::thread canT(&canThread, ros::Rate(20), &ridgeback);
+  boost::thread canT(&canThread, ros::Rate(200), &ridgeback);
 
   // Background thread for the controls callback.
   ros::NodeHandle controller_nh("");
   controller_manager::ControllerManager cm(&ridgeback, controller_nh);
-  boost::thread controlT(&controlThread, ros::Rate(20), &ridgeback, &cm);
+  boost::thread controlT(&controlThread, ros::Rate(50), &ridgeback, &cm);
 
   // Create diagnostic updater, to update itself on the ROS thread.
   //ridgeback_base::RidgebackDiagnosticUpdater ridgeback_diagnostic_updater;

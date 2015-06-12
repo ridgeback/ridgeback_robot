@@ -63,11 +63,10 @@ public:
   void verify();
   bool isActive();
 
-  bool powerRest();  // Checks if power has been reset
+  bool powerHasNotReset();  // Checks if power has been reset
   bool inReset();  // Returns if the cm should be reset based on the state of the motors drivers.
                    // If they have been configured.
-
-  void requestData();
+  void requestData(int& feedback_item);
   void updateJointsFromHardware();
   void command();
 

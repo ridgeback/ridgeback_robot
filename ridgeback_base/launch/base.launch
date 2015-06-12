@@ -1,7 +1,7 @@
 <launch>
   <include file="$(find ridgeback_description)/launch/description.launch" />
 
-  <node pkg="ridgeback_base" type="ridgeback_node" name="ridgeback_node" />
+  <node pkg="ridgeback_base" type="ridgeback_node" name="ridgeback_node" output="screen" />
 
   <!-- Differential controller and basic localization -->
   <include file="$(find ridgeback_control)/launch/control.launch" />
