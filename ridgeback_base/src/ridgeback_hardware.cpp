@@ -50,6 +50,7 @@ RidgebackHardware::RidgebackHardware(ros::NodeHandle& nh, ros::NodeHandle& pnh,
       ("front_right_wheel")("rear_left_wheel")("rear_right_wheel");
 
    std::vector<uint8_t> joint_canids = boost::assign::list_of(3)(5)(2)(4);
+   std::vector<int8_t> joint_directions = boost::assign::list_of(-1)(1)(-1)(1);
 
   for (unsigned int i = 0; i < joint_names.size(); i++)
   {
@@ -61,7 +62,12 @@ RidgebackHardware::RidgebackHardware(ros::NodeHandle& nh, ros::NodeHandle& pnh,
         joint_state_handle, &joints_[i].velocity_command);
     velocity_joint_interface_.registerHandle(joint_handle);
 
-    drivers_.push_back(puma_motor_driver::Driver(gateway_, joint_canids[i], joint_names[i]));
+    puma_motor_driver::Driver driver(gateway_, joint_canids[i], joint_names[i]);
+    driver.clearStatusCache();
+    driver.setEncoderCPR(encoder_cpr_);
+    driver.setGearRatio(gear_ratio_ * joint_directions[i]);
+    driver.setMode(puma_motor_msgs::Status::MODE_SPEED, 0.1, 0.01, 0.0);
+    drivers_.push_back(driver);
   }
 
   registerInterface(&joint_state_interface_);
@@ -75,13 +81,7 @@ RidgebackHardware::RidgebackHardware(ros::NodeHandle& nh, ros::NodeHandle& pnh,
   pnh_.param<double>("gear_ratio", gear_ratio_, 79.0);
   pnh_.param<int>("encoder_cpr", encoder_cpr_, 1024);
 
-  BOOST_FOREACH(puma_motor_driver::Driver& driver, drivers_)
-  {
-    driver.clearStatusCache();
-    driver.setEncoderCPR(encoder_cpr_);
-    driver.setGearRatio(gear_ratio_);
-    driver.setMode(puma_motor_msgs::Status::MODE_SPEED, 0.1, 0.01, 0.0);
-  }
+
 }
 
 /**
