@@ -80,7 +80,7 @@ RidgebackHardware::RidgebackHardware(ros::NodeHandle& nh, ros::NodeHandle& pnh,
     driver.clearStatusCache();
     driver.setEncoderCPR(encoder_cpr_);
     driver.setGearRatio(gear_ratio_);
-    driver.setMode(puma_motor_msgs::Status::MODE_SPEED, -0.1, -0.01, 0.0);
+    driver.setMode(puma_motor_msgs::Status::MODE_SPEED, 0.1, 0.01, 0.0);
   }
 }
 
@@ -107,9 +107,9 @@ bool RidgebackHardware::isActive()
 {
   if (active_ == false
      && drivers_[0].isConfigured() == true
-     //&& drivers_[1].isConfigured() == true
+     && drivers_[1].isConfigured() == true
      && drivers_[2].isConfigured() == true
-     //&& drivers_[3].isConfigured() == true
+     && drivers_[3].isConfigured() == true
      )
   {
     active_ = true;
