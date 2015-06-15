@@ -55,7 +55,7 @@ RidgebackHardware::RidgebackHardware(ros::NodeHandle& nh, ros::NodeHandle& pnh,
 
    std::vector<uint8_t> joint_canids = boost::assign::list_of(5)(4)(3)(2);
    // 5 4 3 2
-   std::vector<float> joint_directions = boost::assign::list_of(1)(1)(1)(-1);
+   std::vector<float> joint_directions = boost::assign::list_of(-1)(1)(1)(-1);
 
 
   for (unsigned int i = 0; i < joint_names.size(); i++)
