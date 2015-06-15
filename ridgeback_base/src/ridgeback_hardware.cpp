@@ -53,7 +53,8 @@ RidgebackHardware::RidgebackHardware(ros::NodeHandle& nh, ros::NodeHandle& pnh,
   ros::V_string joint_names = boost::assign::list_of("front_left_wheel")
       ("front_right_wheel")("rear_left_wheel")("rear_right_wheel");
 
-   std::vector<uint8_t> joint_canids = boost::assign::list_of(3)(5)(2)(4);
+   std::vector<uint8_t> joint_canids = boost::assign::list_of(5)(4)(3)(2);
+   // 5 4 3 2
    std::vector<float> joint_directions = boost::assign::list_of(-1)(1)(-1)(1);
 
 
