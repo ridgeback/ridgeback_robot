@@ -117,7 +117,7 @@ int main(int argc, char* argv[])
   // Background thread for the controls callback.
   ros::NodeHandle controller_nh("");
   controller_manager::ControllerManager cm(&ridgeback, controller_nh);
-  boost::thread controlT(&controlThread, ros::Rate(50), &ridgeback, &cm);
+  boost::thread controlT(&controlThread, ros::Rate(25), &ridgeback, &cm);
 
   // Create diagnostic updater, to update itself on the ROS thread.
   //ridgeback_base::RidgebackDiagnosticUpdater ridgeback_diagnostic_updater;
