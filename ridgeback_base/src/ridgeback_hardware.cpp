@@ -79,11 +79,6 @@ RidgebackHardware::RidgebackHardware(ros::NodeHandle& nh, ros::NodeHandle& pnh,
   registerInterface(&joint_state_interface_);
   registerInterface(&velocity_joint_interface_);
 
-  feedbacks_.push_back(&puma_motor_driver::Driver::requestFeedbackPowerState);
-  feedbacks_.push_back(&puma_motor_driver::Driver::requestFeedbackSpeed);
-  feedbacks_.push_back(&puma_motor_driver::Driver::requestFeedbackPosition);
-  feedbacks_.push_back(&puma_motor_driver::Driver::requestFeedbackCurrent);
-
 }
 
 /**
@@ -125,7 +120,7 @@ void RidgebackHardware::requestData(int& feedback_item)
 {
   BOOST_FOREACH(puma_motor_driver::Driver& driver, drivers_)
   {
-    (driver.*feedbacks_[feedback_item])();
+    driver.requestFeedbackPowerState();
   }
 }
 bool RidgebackHardware::powerHasNotReset()
