@@ -63,13 +63,12 @@ public:
   void verify();
   bool isActive();
 
-  bool powerHasNotReset();  // Checks if power has been reset
+  void powerHasNotReset();  // Checks if power has been reset
   bool inReset();  // Returns if the cm should be reset based on the state of the motors drivers.
                    // If they have been configured.
-  void requestData(int& feedback_item);
+  void requestData();
   void updateJointsFromHardware();
   void command();
-
 
   void canSend();
   void canRead();
@@ -79,7 +78,6 @@ private:
 
   puma_motor_driver::Gateway& gateway_;
   std::vector<puma_motor_driver::Driver> drivers_;
-  std::vector<requestFeedback> feedbacks_;
 
   bool active_;
   double gear_ratio_;

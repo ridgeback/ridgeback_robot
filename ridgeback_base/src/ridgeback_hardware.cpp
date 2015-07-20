@@ -54,9 +54,7 @@ RidgebackHardware::RidgebackHardware(ros::NodeHandle& nh, ros::NodeHandle& pnh,
       ("front_right_wheel")("rear_left_wheel")("rear_right_wheel");
 
    std::vector<uint8_t> joint_canids = boost::assign::list_of(5)(4)(2)(3);
-   // 5 4 3 2
    std::vector<float> joint_directions = boost::assign::list_of(-1)(1)(-1)(1);
-
 
   for (unsigned int i = 0; i < joint_names.size(); i++)
   {
@@ -106,8 +104,7 @@ bool RidgebackHardware::isActive()
      && drivers_[0].isConfigured() == true
      && drivers_[1].isConfigured() == true
      && drivers_[2].isConfigured() == true
-     && drivers_[3].isConfigured() == true
-     )
+     && drivers_[3].isConfigured() == true)
   {
     active_ = true;
     ROS_INFO("Ridgeback Hardware Active.");
@@ -116,14 +113,14 @@ bool RidgebackHardware::isActive()
   return active_;
 }
 
-void RidgebackHardware::requestData(int& feedback_item)
+void RidgebackHardware::requestData()
 {
   BOOST_FOREACH(puma_motor_driver::Driver& driver, drivers_)
   {
     driver.requestFeedbackPowerState();
   }
 }
-bool RidgebackHardware::powerHasNotReset()
+void RidgebackHardware::powerHasNotReset()
 {
   // Checks to see if power flag has been reset for each driver
   BOOST_FOREACH(puma_motor_driver::Driver& driver, drivers_)
