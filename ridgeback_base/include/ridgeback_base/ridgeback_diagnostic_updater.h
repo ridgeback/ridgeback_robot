@@ -31,18 +31,17 @@
  *
  */
 
-#ifndef JACKAL_BASE_JACKAL_DIAGNOSTIC_UPDATER_H
-#define JACKAL_BASE_JACKAL_DIAGNOSTIC_UPDATER_H
+#ifndef RIDGEBACK_BASE_RIDGEBACK_DIAGNOSTIC_UPDATER_H
+#define RIDGEBACK_BASE_RIDGEBACK_DIAGNOSTIC_UPDATER_H
 
 #include <string>
 
+#include "ros/ros.h"
+#include "std_msgs/Bool.h"
+#include "sensor_msgs/Imu.h"
 #include "diagnostic_updater/diagnostic_updater.h"
 #include "diagnostic_updater/publisher.h"
-#include "puma_motor_msgs/MultiStatus.h"
-#include "nmea_msgs/Sentence.h"
-#include "ros/ros.h"
-#include "sensor_msgs/Imu.h"
-#include "std_msgs/Bool.h"
+#include "ridgeback_msgs/Status.h"
 
 namespace ridgeback_base
 {
@@ -57,10 +56,10 @@ public:
   void voltageDiagnostics(diagnostic_updater::DiagnosticStatusWrapper &stat);
   void currentDiagnostics(diagnostic_updater::DiagnosticStatusWrapper &stat);
   void powerDiagnostics(diagnostic_updater::DiagnosticStatusWrapper &stat);
+  void temperatureDiagnostics(diagnostic_updater::DiagnosticStatusWrapper &stat);
 
   void statusCallback(const ridgeback_msgs::Status::ConstPtr& status);
   void imuCallback(const sensor_msgs::Imu::ConstPtr& msg);
-  void navsatCallback(const nmea_msgs::Sentence::ConstPtr& msg);
   void wirelessMonitorCallback(const ros::TimerEvent& te);
 
 private:
@@ -73,11 +72,6 @@ private:
   diagnostic_updater::TopicDiagnostic* imu_diagnostic_;
   ros::Subscriber imu_sub_;
 
-  double expected_navsat_frequency_;
-  std::string navsat_frequency_sentence_;
-  diagnostic_updater::TopicDiagnostic* navsat_diagnostic_;
-  ros::Subscriber navsat_sub_;
-
   std::string wireless_interface_;
   ros::Timer wireless_monitor_timer_;
   ros::Publisher wifi_connected_pub_;
@@ -85,4 +79,4 @@ private:
 
 }  // namespace ridgeback_base
 
-#endif  // JACKAL_BASE_JACKAL_DIAGNOSTIC_UPDATER_H
+#endif  // RIDGEBACK_BASE_RIDGEBACK_DIAGNOSTIC_UPDATER_H

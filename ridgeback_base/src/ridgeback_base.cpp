@@ -32,15 +32,19 @@
  */
 
 #include <string>
+#include <boost/asio.hpp>
+#include <boost/bind.hpp>
 #include <boost/thread.hpp>
 #include <boost/chrono.hpp>
 #include <boost/foreach.hpp>
 
-
 #include "controller_manager/controller_manager.h"
-//#include "ridgeback_base/ridgeback_diagnostic_updater.h"
+#include "ridgeback_base/ridgeback_diagnostic_updater.h"
 #include "ridgeback_base/ridgeback_hardware.h"
+#include "puma_motor_driver/diagnostic_updater.h"
 #include "ros/ros.h"
+#include "rosserial_server/session.h"
+#include "rosserial_server/tcp_server.h"
 
 typedef boost::chrono::steady_clock time_source;
 
@@ -104,6 +108,14 @@ int main(int argc, char* argv[])
   ros::init(argc, argv, "ridgeback_node");
   ros::NodeHandle nh, pnh("~");
 
+  // Create the socket rosserial server in a background ASIO event loop.
+  int port;
+  ros::param::param<int>("~port", port, 11411);
+  boost::asio::io_service io_service;
+  rosserial_server::TcpServer<
+      rosserial_server::Session<boost::asio::ip::tcp::socket> > s(io_service, port);
+  boost::thread(boost::bind(&boost::asio::io_service::run, &io_service));
+
   std::string canbus_dev;
   pnh.param<std::string>("canbus_dev", canbus_dev, "can0");
   puma_motor_driver::SocketCANGateway gateway(canbus_dev);
@@ -120,9 +132,9 @@ int main(int argc, char* argv[])
   boost::thread controlT(&controlThread, ros::Rate(25), &ridgeback, &cm);
 
   // Create diagnostic updater, to update itself on the ROS thread.
-  //ridgeback_base::RidgebackDiagnosticUpdater ridgeback_diagnostic_updater;
-
-  // Foreground ROS spinner for ROS callbacks, including rosserial, diagnostics
+  ridgeback_base::RidgebackDiagnosticUpdater ridgeback_diagnostic_updater;
+  puma_motor_driver::PumaMotorDriverDiagnosticUpdater puma_motor_driver_diagnostic_updater;
+  // Foreground ROS spinner for ROS callbacks, including diagnostics
   ros::spin();
 
   return 0;

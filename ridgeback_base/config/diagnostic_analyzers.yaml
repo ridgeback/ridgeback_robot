@@ -20,8 +20,7 @@ analyzers:
         remove_prefix: 'ridgeback_node'
         timeout: 5.0
         expected: [
-          'ridgeback_node: /imu/data_raw topic status',
-          'ridgeback_node: /navsat/nmea_sentence topic status' ]
+          'ridgeback_node: /imu/data_raw topic status']
       teleop:
         type: diagnostic_aggregator/GenericAnalyzer
         path: Bluetooth Joystick

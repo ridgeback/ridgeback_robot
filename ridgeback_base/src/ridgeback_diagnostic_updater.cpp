@@ -52,9 +52,11 @@ RidgebackDiagnosticUpdater::RidgebackDiagnosticUpdater()
   add("User voltage supplies", this, &RidgebackDiagnosticUpdater::voltageDiagnostics);
   add("Current consumption", this, &RidgebackDiagnosticUpdater::currentDiagnostics);
   add("Power consumption", this, &RidgebackDiagnosticUpdater::powerDiagnostics);
+  add("Temperature", this, &RidgebackDiagnosticUpdater::temperatureDiagnostics);
 
   // The arrival of this message runs the update() method and triggers the above callbacks.
-  status_sub_ = nh_.subscribe("status", 5, &RidgebackDiagnosticUpdater::statusCallback, this);
+  // TODO: ns for this topic.
+  status_sub_ = nh_.subscribe("mcu_status", 5, &RidgebackDiagnosticUpdater::statusCallback, this);
 
   // These message frequencies are reported on separately.
   ros::param::param("~expected_imu_frequency", expected_imu_frequency_, 50.0);
@@ -62,13 +64,6 @@ RidgebackDiagnosticUpdater::RidgebackDiagnosticUpdater()
       diagnostic_updater::FrequencyStatusParam(&expected_imu_frequency_, &expected_imu_frequency_, 0.15),
       diagnostic_updater::TimeStampStatusParam(-1, 1.0));
   imu_sub_ = nh_.subscribe("/imu/data_raw", 5, &RidgebackDiagnosticUpdater::imuCallback, this);
-
-  ros::param::param("~expected_navsat_frequency", expected_navsat_frequency_, 10.0);
-  ros::param::param<std::string>("~navsat_frequency_sentence", navsat_frequency_sentence_, "$GPRMC");
-  navsat_diagnostic_ = new diagnostic_updater::TopicDiagnostic("/navsat/nmea_sentence", *this,
-      diagnostic_updater::FrequencyStatusParam(&expected_navsat_frequency_, &expected_navsat_frequency_, 0.1),
-      diagnostic_updater::TimeStampStatusParam(-1, 1.0));
-  navsat_sub_ = nh_.subscribe("/navsat/nmea_sentence", 5, &RidgebackDiagnosticUpdater::navsatCallback, this);
 
   // Publish whether the wireless interface has an IP address every second.
   ros::param::param<std::string>("~wireless_interface", wireless_interface_, "wlan0");
@@ -91,7 +86,7 @@ void RidgebackDiagnosticUpdater::generalDiagnostics(diagnostic_updater::Diagnost
     else
     {
       stat.add("External stop", "Present, not asserting stop");
-    }
+     }
   }
   else
   {
@@ -164,9 +159,6 @@ void RidgebackDiagnosticUpdater::voltageDiagnostics(diagnostic_updater::Diagnost
 
 void RidgebackDiagnosticUpdater::currentDiagnostics(diagnostic_updater::DiagnosticStatusWrapper &stat)
 {
-  stat.add("Drive current (A)", last_status_->drive_current);
-  stat.add("User current (A)", last_status_->user_current);
-  stat.add("Computer current (A)", last_status_->computer_current);
   stat.add("Total current (A)", last_status_->total_current);
 
   if (last_status_->total_current > 32.0)
@@ -190,6 +182,7 @@ void RidgebackDiagnosticUpdater::currentDiagnostics(diagnostic_updater::Diagnost
 void RidgebackDiagnosticUpdater::powerDiagnostics(diagnostic_updater::DiagnosticStatusWrapper &stat)
 {
   stat.add("Total power consumption (Wh)", last_status_->total_power_consumed);
+  stat.add("AC power connnected", last_status_->charger_connected);
 
   if (last_status_->total_power_consumed > 260.0)
   {
@@ -205,6 +198,38 @@ void RidgebackDiagnosticUpdater::powerDiagnostics(diagnostic_updater::Diagnostic
   }
 }
 
+void RidgebackDiagnosticUpdater::temperatureDiagnostics(diagnostic_updater::DiagnosticStatusWrapper &stat)
+{
+  stat.add("PCB temperature (C)", last_status_->pcb_temperature);
+  stat.add("MCU temperature (C)", last_status_->mcu_temperature);
+
+  if (last_status_->pcb_temperature > 100.0)
+  {
+    stat.summary(diagnostic_msgs::DiagnosticStatus::WARN, "Hot dog!");
+  }
+  else if (last_status_->pcb_temperature > 60.0)
+  {
+    stat.summary(diagnostic_msgs::DiagnosticStatus::WARN, "PCB temperature geting warm");
+  }
+  else
+  {
+    stat.summary(diagnostic_msgs::DiagnosticStatus::OK, "PCB temperature OK.");
+  }
+
+  if (last_status_->mcu_temperature > 100.0)
+  {
+    stat.summary(diagnostic_msgs::DiagnosticStatus::WARN, "Hot dog!");
+  }
+  else if (last_status_->mcu_temperature > 60.0)
+  {
+    stat.summary(diagnostic_msgs::DiagnosticStatus::WARN, "MCU temperature geting warm");
+  }
+  else
+  {
+    stat.summary(diagnostic_msgs::DiagnosticStatus::OK, "MCU temperature OK.");
+  }
+}
+
 void RidgebackDiagnosticUpdater::statusCallback(const ridgeback_msgs::Status::ConstPtr& status)
 {
   // Fresh data from the MCU, publish a diagnostic update.
@@ -216,14 +241,6 @@ void RidgebackDiagnosticUpdater::statusCallback(const ridgeback_msgs::Status::Co
 void RidgebackDiagnosticUpdater::imuCallback(const sensor_msgs::Imu::ConstPtr& msg)
 {
   imu_diagnostic_->tick(msg->header.stamp);
-}
-
-void RidgebackDiagnosticUpdater::navsatCallback(const nmea_msgs::Sentence::ConstPtr& msg)
-{
-  if (boost::starts_with(msg->sentence, navsat_frequency_sentence_))
-  {
-    navsat_diagnostic_->tick(msg->header.stamp);
-  }
 }
 
 void RidgebackDiagnosticUpdater::wirelessMonitorCallback(const ros::TimerEvent& te)

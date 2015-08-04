@@ -36,6 +36,7 @@
 
 #include "boost/thread.hpp"
 #include "boost/foreach.hpp"
+#include "boost/shared_ptr.hpp"
 #include "hardware_interface/joint_state_interface.h"
 #include "hardware_interface/joint_command_interface.h"
 #include "hardware_interface/robot_hw.h"
@@ -43,6 +44,7 @@
 #include "sensor_msgs/JointState.h"
 #include "puma_motor_driver/socketcan_gateway.h"
 #include "puma_motor_driver/driver.h"
+#include "puma_motor_driver/multi_driver_node.h"
 #include "puma_motor_msgs/MultiFeedback.h"
 
 namespace ridgeback_base
@@ -58,7 +60,7 @@ public:
                     puma_motor_driver::Gateway& gateway);
   void init();  // Connect to CAN
   bool connectIfNotConnected();  // Keep trying till it connects
-
+  std::vector<puma_motor_driver::Driver>& getDrivers();
   void configure();  // Configures the motor drivers
   void verify();
   bool isActive();
@@ -70,7 +72,6 @@ public:
   void updateJointsFromHardware();
   void command();
 
-
   void canSend();
   void canRead();
 
@@ -80,7 +81,7 @@ private:
   puma_motor_driver::Gateway& gateway_;
   std::vector<puma_motor_driver::Driver> drivers_;
   std::vector<requestFeedback> feedbacks_;
-
+  boost::shared_ptr<puma_motor_driver::MultiDriverNode> multi_driver_node_;
   bool active_;
   double gear_ratio_;
   int encoder_cpr_;

@@ -34,7 +34,7 @@
 #include <boost/assign.hpp>
 #include "ridgeback_base/ridgeback_hardware.h"
 #include "puma_motor_driver/driver.h"
-
+#include "puma_motor_driver/multi_driver_node.h"
 
 namespace ridgeback_base
 {
@@ -52,13 +52,11 @@ RidgebackHardware::RidgebackHardware(ros::NodeHandle& nh, ros::NodeHandle& pnh,
 
   ros::V_string joint_names = boost::assign::list_of("front_left_wheel")
       ("front_right_wheel")("rear_left_wheel")("rear_right_wheel");
-
    std::vector<uint8_t> joint_canids = boost::assign::list_of(5)(4)(2)(3);
-   // 5 4 3 2
    std::vector<float> joint_directions = boost::assign::list_of(-1)(1)(-1)(1);
 
 
-  for (unsigned int i = 0; i < joint_names.size(); i++)
+  for (uint8_t i = 0; i < joint_names.size(); i++)
   {
     hardware_interface::JointStateHandle joint_state_handle(joint_names[i],
         &joints_[i].position, &joints_[i].velocity, &joints_[i].effort);
@@ -76,8 +74,12 @@ RidgebackHardware::RidgebackHardware(ros::NodeHandle& nh, ros::NodeHandle& pnh,
     drivers_.push_back(driver);
   }
 
+
+
   registerInterface(&joint_state_interface_);
   registerInterface(&velocity_joint_interface_);
+
+  multi_driver_node_.reset(new puma_motor_driver::MultiDriverNode(nh_, drivers_));
 
   feedbacks_.push_back(&puma_motor_driver::Driver::requestFeedbackPowerState);
   feedbacks_.push_back(&puma_motor_driver::Driver::requestFeedbackSpeed);
@@ -87,7 +89,7 @@ RidgebackHardware::RidgebackHardware(ros::NodeHandle& nh, ros::NodeHandle& pnh,
 }
 
 /**
- * Populates the internal joint state struct from the most recent Feedback message
+ * Populates the internal joint state struct from the most recent CAN data
  * received from the motor controller.
  *
  * Called from the controller thread.
@@ -107,15 +109,23 @@ void RidgebackHardware::updateJointsFromHardware()
 
 bool RidgebackHardware::isActive()
 {
-  if (active_ == false
-     && drivers_[0].isConfigured() == true
-     && drivers_[1].isConfigured() == true
-     && drivers_[2].isConfigured() == true
-     && drivers_[3].isConfigured() == true
-     )
+  if (drivers_[0].isConfigured() == true
+    && drivers_[1].isConfigured() == true
+    && drivers_[2].isConfigured() == true
+    && drivers_[3].isConfigured() == true
+    && active_ == false)
   {
     active_ = true;
     ROS_INFO("Ridgeback Hardware Active.");
+  }
+  else if ((drivers_[0].isConfigured() == false
+    || drivers_[1].isConfigured() == false
+    || drivers_[2].isConfigured() == false
+    || drivers_[3].isConfigured() == false)
+    && active_ == true)
+  {
+    active_ = false;
+    ROS_WARN("Ridgeback Hardware Inactive.");
   }
 
   return active_;
@@ -215,10 +225,17 @@ bool RidgebackHardware::connectIfNotConnected()
  */
 void RidgebackHardware::command()
 {
-  for (int i = 0; i < 4; i++)
+  uint8_t i = 0;
+  BOOST_FOREACH(puma_motor_driver::Driver& driver, drivers_)
   {
-    drivers_[i].commandSpeed(joints_[i].velocity_command);
+    driver.commandSpeed(joints_[i].velocity_command);
+    i++;
   }
+}
+
+std::vector<puma_motor_driver::Driver>& RidgebackHardware::getDrivers()
+{
+    return drivers_;
 }
 
 }  // namespace ridgeback_base

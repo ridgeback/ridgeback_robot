@@ -1,6 +1,8 @@
 <launch>
   <include file="$(find ridgeback_description)/launch/description.launch" />
 
+  <node pkg="rosserial_python" type="message_info_service.py" name="rosserial_message_info" />
+
   <node pkg="ridgeback_base" type="ridgeback_node" name="ridgeback_node" output="screen" />
 
   <!-- Differential controller and basic localization -->
