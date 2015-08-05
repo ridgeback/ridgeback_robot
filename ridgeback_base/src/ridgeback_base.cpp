@@ -38,7 +38,7 @@
 
 
 #include "controller_manager/controller_manager.h"
-//#include "ridgeback_base/ridgeback_diagnostic_updater.h"
+// #include "ridgeback_base/ridgeback_diagnostic_updater.h"
 #include "ridgeback_base/ridgeback_hardware.h"
 #include "ros/ros.h"
 
@@ -66,34 +66,31 @@ void controlThread(ros::Rate rate, ridgeback_base::RidgebackHardware* robot, con
       robot->configure();
     }
 
+    robot->canSend();
+
     cm->update(ros::Time::now(), elapsed, robot->inReset());
 
     if (robot->isActive())
     {
       robot->command();
+      robot->requestData();
     }
     else
     {
       robot->verify();
     }
+
+    robot->canSend();
     rate.sleep();
   }
 }
 
-void canThread(ros::Rate rate, ridgeback_base::RidgebackHardware* robot)
+void canReadThread(ros::Rate rate, ridgeback_base::RidgebackHardware* robot)
 {
-  static int desired_feedback_item = 0;
+
   while (1)
   {
     robot->canRead();
-    robot->requestData(desired_feedback_item);
-    robot->canSend();
-
-    desired_feedback_item++;
-    if (desired_feedback_item >= 4)
-    {
-      desired_feedback_item = 0;
-    }
     rate.sleep();
   }
 }
@@ -112,7 +109,7 @@ int main(int argc, char* argv[])
   // Configure the CAN connection
   ridgeback.init();
   // Create a thread to start reading can messages.
-  boost::thread canT(&canThread, ros::Rate(200), &ridgeback);
+  boost::thread canReadT(&canReadThread, ros::Rate(200), &ridgeback);
 
   // Background thread for the controls callback.
   ros::NodeHandle controller_nh("");
@@ -120,7 +117,7 @@ int main(int argc, char* argv[])
   boost::thread controlT(&controlThread, ros::Rate(25), &ridgeback, &cm);
 
   // Create diagnostic updater, to update itself on the ROS thread.
-  //ridgeback_base::RidgebackDiagnosticUpdater ridgeback_diagnostic_updater;
+  // ridgeback_base::RidgebackDiagnosticUpdater ridgeback_diagnostic_updater;
 
   // Foreground ROS spinner for ROS callbacks, including rosserial, diagnostics
   ros::spin();
