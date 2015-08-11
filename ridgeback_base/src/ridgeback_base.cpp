@@ -91,7 +91,6 @@ void controlThread(ros::Rate rate, ridgeback_base::RidgebackHardware* robot, con
 
 void canReadThread(ros::Rate rate, ridgeback_base::RidgebackHardware* robot)
 {
-
   while (1)
   {
     robot->canRead();

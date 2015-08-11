@@ -55,7 +55,7 @@ RidgebackDiagnosticUpdater::RidgebackDiagnosticUpdater()
   add("Temperature", this, &RidgebackDiagnosticUpdater::temperatureDiagnostics);
 
   // The arrival of this message runs the update() method and triggers the above callbacks.
-  // TODO: ns for this topic.
+  // TODO(tonybaltovski): ns for this topic.
   status_sub_ = nh_.subscribe("mcu_status", 5, &RidgebackDiagnosticUpdater::statusCallback, this);
 
   // These message frequencies are reported on separately.
@@ -69,7 +69,8 @@ RidgebackDiagnosticUpdater::RidgebackDiagnosticUpdater()
   ros::param::param<std::string>("~wireless_interface", wireless_interface_, "wlan0");
   ROS_INFO_STREAM("Checking for wireless connectivity on interface: " << wireless_interface_);
   wifi_connected_pub_ = nh_.advertise<std_msgs::Bool>("wifi_connected", 1);
-  wireless_monitor_timer_ = nh_.createTimer(ros::Duration(1.0), &RidgebackDiagnosticUpdater::wirelessMonitorCallback, this);
+  wireless_monitor_timer_ =
+    nh_.createTimer(ros::Duration(1.0), &RidgebackDiagnosticUpdater::wirelessMonitorCallback, this);
 }
 
 void RidgebackDiagnosticUpdater::generalDiagnostics(diagnostic_updater::DiagnosticStatusWrapper &stat)
@@ -258,7 +259,7 @@ void RidgebackDiagnosticUpdater::wirelessMonitorCallback(const ros::TimerEvent& 
 
   // Iterate structure looking for the wireless interface.
   struct ifaddrs* ifa_current = ifa_head;
-  while(ifa_current != NULL)
+  while (ifa_current != NULL)
   {
     if (strcmp(ifa_current->ifa_name, wireless_interface_.c_str()) == 0)
     {

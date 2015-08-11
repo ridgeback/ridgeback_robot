@@ -31,7 +31,8 @@
  *
  */
 
-#include <boost/assign.hpp>
+#include <vector>
+#include "boost/assign.hpp"
 #include "boost/shared_ptr.hpp"
 #include "ridgeback_base/ridgeback_hardware.h"
 #include "puma_motor_driver/driver.h"
@@ -47,14 +48,13 @@ RidgebackHardware::RidgebackHardware(ros::NodeHandle& nh, ros::NodeHandle& pnh,
   gateway_(gateway),
   active_(false)
 {
-
   pnh_.param<double>("gear_ratio", gear_ratio_, 79.0);
   pnh_.param<int>("encoder_cpr", encoder_cpr_, 1024);
 
   ros::V_string joint_names = boost::assign::list_of("front_left_wheel")
       ("front_right_wheel")("rear_left_wheel")("rear_right_wheel");
-   std::vector<uint8_t> joint_canids = boost::assign::list_of(5)(4)(2)(3);
-   std::vector<float> joint_directions = boost::assign::list_of(-1)(1)(-1)(1);
+  std::vector<uint8_t> joint_canids = boost::assign::list_of(5)(4)(2)(3);
+  std::vector<float> joint_directions = boost::assign::list_of(-1)(1)(-1)(1);
 
   for (uint8_t i = 0; i < joint_names.size(); i++)
   {
@@ -93,7 +93,7 @@ void RidgebackHardware::updateJointsFromHardware()
   {
     Joint* f = &joints_[index];
     f->effort = driver.lastCurrent();
-    f->position= driver.lastPosition();
+    f->position = driver.lastPosition();
     f->velocity = driver.lastSpeed();
     index++;
   }
@@ -169,7 +169,7 @@ bool RidgebackHardware::inReset()
 
 void RidgebackHardware::init()
 {
-  while(!connectIfNotConnected())
+  while (!connectIfNotConnected())
   {
     ros::Duration(1.0).sleep();
   }

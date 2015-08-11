@@ -34,6 +34,8 @@
 #ifndef RIDGEBACK_BASE_RIDGEBACK_HARDWARE_H
 #define RIDGEBACK_BASE_RIDGEBACK_HARDWARE_H
 
+#include <vector>
+
 #include "boost/thread.hpp"
 #include "boost/foreach.hpp"
 #include "boost/shared_ptr.hpp"
@@ -52,9 +54,6 @@ namespace ridgeback_base
 
 class RidgebackHardware : public hardware_interface::RobotHW
 {
-
-typedef void (puma_motor_driver::Driver::*requestFeedback)();
-
 public:
   RidgebackHardware(ros::NodeHandle& nh, ros::NodeHandle& pnh,
                     puma_motor_driver::Gateway& gateway);
@@ -81,7 +80,7 @@ private:
   puma_motor_driver::Gateway& gateway_;
   std::vector<puma_motor_driver::Driver> drivers_;
   boost::shared_ptr<puma_motor_driver::MultiDriverNode> multi_driver_node_;
-  
+
   bool active_;
   double gear_ratio_;
   int encoder_cpr_;
@@ -103,7 +102,6 @@ private:
     }
   }
   joints_[4];
-
 };
 
 }  // namespace ridgeback_base
