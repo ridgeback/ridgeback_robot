@@ -80,7 +80,8 @@ private:
 
   puma_motor_driver::Gateway& gateway_;
   std::vector<puma_motor_driver::Driver> drivers_;
-
+  boost::shared_ptr<puma_motor_driver::MultiDriverNode> multi_driver_node_;
+  
   bool active_;
   double gear_ratio_;
   int encoder_cpr_;

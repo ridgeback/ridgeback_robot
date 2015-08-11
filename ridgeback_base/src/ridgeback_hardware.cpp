@@ -32,6 +32,7 @@
  */
 
 #include <boost/assign.hpp>
+#include "boost/shared_ptr.hpp"
 #include "ridgeback_base/ridgeback_hardware.h"
 #include "puma_motor_driver/driver.h"
 #include "puma_motor_driver/multi_driver_node.h"
@@ -73,11 +74,10 @@ RidgebackHardware::RidgebackHardware(ros::NodeHandle& nh, ros::NodeHandle& pnh,
     drivers_.push_back(driver);
   }
 
-
-
   registerInterface(&joint_state_interface_);
   registerInterface(&velocity_joint_interface_);
 
+  multi_driver_node_.reset(new puma_motor_driver::MultiDriverNode(nh_, drivers_));
 }
 
 /**
