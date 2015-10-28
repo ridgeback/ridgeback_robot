@@ -75,32 +75,13 @@ RidgebackDiagnosticUpdater::RidgebackDiagnosticUpdater()
 
 void RidgebackDiagnosticUpdater::generalDiagnostics(diagnostic_updater::DiagnosticStatusWrapper &stat)
 {
-  stat.add("MCU uptime (s)", last_status_->mcu_uptime.toSec());
-  stat.addf("Motor drivers energized", "%s", last_status_->drivers_active ? "true" : "false");
+  stat.addf("MCU uptime", "%d seconds", last_status_->mcu_uptime.toSec());
+  stat.add("External stop status", last_status_->external_stop_present ? "present" : "absent");
+  stat.add("Run/stop status", last_status_->external_stop_present ? "running" : "stopped" );
 
-  if (last_status_->driver_external_stop_present)
+  if (!last_status_->drivers_active)
   {
-    if (last_status_->driver_external_stop_stopped)
-    {
-      stat.add("External stop", "Present, asserting stop");
-    }
-    else
-    {
-      stat.add("External stop", "Present, not asserting stop");
-     }
-  }
-  else
-  {
-    stat.add("External stop", "Absent");
-  }
-
-  if (last_status_->driver_external_stop_stopped)
-  {
-    stat.summary(diagnostic_msgs::DiagnosticStatus::ERROR, "External stop device asserting motor stop.");
-  }
-  else if (!last_status_->drivers_active)
-  {
-    stat.summary(diagnostic_msgs::DiagnosticStatus::ERROR, "Motor drivers not energized.");
+    stat.summary(diagnostic_msgs::DiagnosticStatus::ERROR, "Stop loop open, platform immobilized.");
   }
   else
   {
