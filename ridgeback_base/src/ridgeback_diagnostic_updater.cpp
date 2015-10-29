@@ -55,8 +55,7 @@ RidgebackDiagnosticUpdater::RidgebackDiagnosticUpdater()
   add("Temperature", this, &RidgebackDiagnosticUpdater::temperatureDiagnostics);
 
   // The arrival of this message runs the update() method and triggers the above callbacks.
-  // TODO(tonybaltovski): ns for this topic.
-  status_sub_ = nh_.subscribe("mcu_status", 5, &RidgebackDiagnosticUpdater::statusCallback, this);
+  status_sub_ = nh_.subscribe("mcu/status", 5, &RidgebackDiagnosticUpdater::statusCallback, this);
 
   // These message frequencies are reported on separately.
   ros::param::param("~expected_imu_frequency", expected_imu_frequency_, 50.0);
