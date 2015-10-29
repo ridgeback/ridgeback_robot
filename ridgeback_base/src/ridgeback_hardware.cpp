@@ -108,6 +108,7 @@ bool RidgebackHardware::isActive()
      && drivers_[3].isConfigured() == true)
   {
     active_ = true;
+    multi_driver_node_->activePublishers(active_);
     ROS_INFO("Ridgeback Hardware Active.");
   }
   else if ((drivers_[0].isConfigured() == false
@@ -139,6 +140,7 @@ void RidgebackHardware::powerHasNotReset()
     {
       active_ = false;
       ROS_WARN("There was a power rest on Dev: %d, will reconfigure all drivers.", driver.deviceNumber());
+      multi_driver_node_->activePublishers(active_);
       BOOST_FOREACH(puma_motor_driver::Driver& driver, drivers_)
       {
         driver.resetConfiguration();
