@@ -97,6 +97,31 @@ void canReadThread(ros::Rate rate, ridgeback_base::RidgebackHardware* robot)
   }
 }
 
+class PassiveJointPublisher
+{
+public:
+  PassiveJointPublisher(ros::NodeHandle& nh)
+  {
+    msg_.name.push_back("front_rocker");
+    msg_.position.push_back(0);
+    msg_.velocity.push_back(0);
+    msg_.effort.push_back(0);
+    pub_ = nh.advertise<sensor_msgs::JointState>("/joint_states", 1);
+    timer_ = nh.createTimer(ros::Duration(0.1), &PassiveJointPublisher::timerCb, this);
+  }
+
+  void timerCb(const ros::TimerEvent&)
+  {
+    msg_.header.stamp = ros::Time::now();
+    pub_.publish(msg_);
+  }
+
+private:
+  sensor_msgs::JointState msg_;
+  ros::Publisher pub_;
+  ros::Timer timer_;
+};
+
 int main(int argc, char* argv[])
 {
   // Initialize ROS node.
@@ -130,6 +155,9 @@ int main(int argc, char* argv[])
   // Create diagnostic updater, to update itself on the ROS thread.
   ridgeback_base::RidgebackDiagnosticUpdater ridgeback_diagnostic_updater;
   puma_motor_driver::PumaMotorDriverDiagnosticUpdater puma_motor_driver_diagnostic_updater;
+
+  // Joint state publisher for passive front axle.
+  PassiveJointPublisher passive_joint_publisher(nh);
 
   // Foreground ROS spinner for ROS callbacks, including rosserial, diagnostics
   ros::spin();
