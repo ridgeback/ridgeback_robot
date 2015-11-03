@@ -48,7 +48,7 @@ RidgebackHardware::RidgebackHardware(ros::NodeHandle& nh, ros::NodeHandle& pnh,
   gateway_(gateway),
   active_(false)
 {
-  pnh_.param<double>("gear_ratio", gear_ratio_, 79.0);
+  pnh_.param<double>("gear_ratio", gear_ratio_, 34.97);
   pnh_.param<int>("encoder_cpr", encoder_cpr_, 1024);
 
   ros::V_string joint_names = boost::assign::list_of("front_left_wheel")
