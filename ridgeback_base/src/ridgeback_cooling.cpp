@@ -41,10 +41,12 @@ RidgebackCooling::RidgebackCooling(ros::NodeHandle* nh) :
   nh_(nh),
   charger_disconnected_(true)
 {
-  cmd_fans_pub_ = nh_->advertise<ridgeback_msgs::Fans>("mcu/fans", 1);
+  cmd_fans_pub_ = nh_->advertise<ridgeback_msgs::Fans>("mcu/cmd_fans", 1);
 
   status_sub_ = nh_->subscribe("mcu/status", 1, &RidgebackCooling::statusCallback, this);
   cmd_vel_sub_ = nh_->subscribe("cmd_vel", 1, &RidgebackCooling::cmdVelCallback, this);
+
+  cmd_fans_timer_ = nh_->createTimer(ros::Duration(1.0/10), &RidgebackCooling::cmdFansCallback, this);
 
   for (int i = 0; i < 6; i++)
   {
@@ -67,27 +69,30 @@ void RidgebackCooling::statusCallback(const ridgeback_msgs::Status::ConstPtr& st
     charger_disconnected_ = true;
   }
 
-  cmd_fans_pub_.publish(cmd_fans_msg_);
 }
 void RidgebackCooling::cmdVelCallback(const geometry_msgs::Twist::ConstPtr& twist)
 {
-  if (twist->linear.x >= 0.1 ||
-      twist->linear.y >= 0.1 ||
-      twist->angular.z >= 0.4)
+  if (twist->linear.x >= LINEAR_VEL_THRESHOLD ||
+      twist->linear.y >= LINEAR_VEL_THRESHOLD ||
+      twist->angular.z >= ANGULAR_VEL_THRESHOLD)
   {
     for (int i = 0; i < 6; i++)
     {
       cmd_fans_msg_.fans[i] = ridgeback_msgs::Fans::FAN_ON_HIGH;
     }
   }
-  else
+  last_motion_cmd_time_ = ros::Time::now().toSec();
+}
+
+void RidgebackCooling::cmdFansCallback(const ros::TimerEvent&)
+{
+  if ((ros::Time::now().toSec() - last_motion_cmd_time_ > MOITON_COMMAND_TIMEOUT) && charger_disconnected_)
   {
     for (int i = 0; i < 6; i++)
     {
       cmd_fans_msg_.fans[i] = ridgeback_msgs::Fans::FAN_ON_LOW;
     }
   }
-
   cmd_fans_pub_.publish(cmd_fans_msg_);
 }
 
