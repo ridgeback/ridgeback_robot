@@ -43,14 +43,17 @@ namespace ridgeback_base
   class PassiveJointPublisher
   {
   public:
-    PassiveJointPublisher(ros::NodeHandle& nh)
+    PassiveJointPublisher(ros::NodeHandle& nh, ros::V_string joints, int frequency)
     {
-      msg_.name.push_back("front_rocker");
-      msg_.position.push_back(0);
-      msg_.velocity.push_back(0);
-      msg_.effort.push_back(0);
+      for (int i = 0; i < joints.size(); i++)
+      {
+        msg_.name.push_back(joints[i]);
+        msg_.position.push_back(0);
+        msg_.velocity.push_back(0);
+        msg_.effort.push_back(0);
+      }
       pub_ = nh.advertise<sensor_msgs::JointState>("/joint_states", 1);
-      timer_ = nh.createTimer(ros::Duration(0.02), &PassiveJointPublisher::timerCb, this);
+      timer_ = nh.createTimer(ros::Duration(1.0/frequency), &PassiveJointPublisher::timerCb, this);
     }
 
     void timerCb(const ros::TimerEvent&)

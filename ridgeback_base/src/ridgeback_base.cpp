@@ -31,12 +31,14 @@
  *
  */
 
+
 #include <string>
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>
 #include <boost/chrono.hpp>
 #include <boost/foreach.hpp>
+#include <boost/assign/list_of.hpp>
 
 #include "controller_manager/controller_manager.h"
 #include "ridgeback_base/ridgeback_diagnostic_updater.h"
@@ -133,7 +135,8 @@ int main(int argc, char* argv[])
   puma_motor_driver::PumaMotorDriverDiagnosticUpdater puma_motor_driver_diagnostic_updater;
 
   // Joint state publisher for passive front axle.
-  ridgeback_base::PassiveJointPublisher passive_joint_publisher(nh);
+  ros::V_string passive_joint = boost::assign::list_of("front_rocker");
+  ridgeback_base::PassiveJointPublisher passive_joint_publisher(nh, passive_joint, 50);
 
   // Foreground ROS spinner for ROS callbacks, including rosserial, diagnostics
   ros::spin();
