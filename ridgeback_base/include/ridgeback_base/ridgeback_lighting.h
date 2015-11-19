@@ -37,6 +37,10 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 namespace ridgeback_base
 {
 
+typedef boost::array<uint32_t, 8> pattern;
+typedef std::vector<pattern> LightsPatterns;
+
+
 class RidgebackLighting
 {
 public:
@@ -66,23 +70,17 @@ private:
   uint8_t current_pattern_count_;
   uint32_t current_pattern_[8];
 
-  static const uint8_t light_stopped_number_of_patterns = 2;
-  static const uint8_t light_fault_number_of_patterns = 4;
-  static const uint8_t light_reset_number_of_patterns = 2;
-  static const uint8_t light_low_bat_number_of_patterns = 4;
-  static const uint8_t light_charged_number_of_patterns = 1;
-  static const uint8_t light_charging_number_of_patterns = 5;
-  static const uint8_t light_driving_number_of_patterns = 1;
-  static const uint8_t light_idle_number_of_patterns = 1;
-
-  static const uint32_t light_stopped_pattern[2][8];
-  static const uint32_t light_fault_pattern[4][8];
-  static const uint32_t light_reset_pattern[2][8];
-  static const uint32_t light_low_bat_pattern[4][8];
-  static const uint32_t light_charged_pattern[1][8];
-  static const uint32_t light_charging_pattern[5][8];
-  static const uint32_t light_driving_pattern[1][8];
-  static const uint32_t light_idle_pattern[1][8];
+  struct patterns
+  {
+    LightsPatterns stopped;
+    LightsPatterns fault;
+    LightsPatterns reset;
+    LightsPatterns low_battery;
+    LightsPatterns charged;
+    LightsPatterns charging;
+    LightsPatterns driving;
+    LightsPatterns idle;
+  } patterns_;
 
   void setRGB(ridgeback_msgs::RGB* rgb, uint32_t colour);
   void setLights(ridgeback_msgs::Lights* lights, uint32_t pattern[8]);
