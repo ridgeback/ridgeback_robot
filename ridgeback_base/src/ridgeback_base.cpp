@@ -41,6 +41,7 @@
 #include "controller_manager/controller_manager.h"
 #include "ridgeback_base/ridgeback_diagnostic_updater.h"
 #include "ridgeback_base/ridgeback_hardware.h"
+#include "ridgeback_base/ridgeback_cooling.h"
 #include "puma_motor_driver/diagnostic_updater.h"
 #include "ros/ros.h"
 #include "rosserial_server/serial_session.h"
@@ -158,6 +159,9 @@ int main(int argc, char* argv[])
 
   // Joint state publisher for passive front axle.
   PassiveJointPublisher passive_joint_publisher(nh);
+
+  // Cooling control for the fans.
+  ridgeback_base::RidgebackCooling cooling(&nh);
 
   // Foreground ROS spinner for ROS callbacks, including rosserial, diagnostics
   ros::spin();
