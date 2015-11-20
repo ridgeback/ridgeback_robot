@@ -42,6 +42,7 @@
 #include "ridgeback_base/ridgeback_diagnostic_updater.h"
 #include "ridgeback_base/ridgeback_hardware.h"
 #include "ridgeback_base/ridgeback_cooling.h"
+#include "ridgeback_base/ridgeback_lighting.h"
 #include "puma_motor_driver/diagnostic_updater.h"
 #include "ros/ros.h"
 #include "rosserial_server/serial_session.h"
@@ -143,6 +144,7 @@ int main(int argc, char* argv[])
   puma_motor_driver::SocketCANGateway gateway(canbus_dev);
 
   ridgeback_base::RidgebackHardware ridgeback(nh, pnh, gateway);
+
   // Configure the CAN connection
   ridgeback.init();
   // Create a thread to start reading can messages.
@@ -152,6 +154,9 @@ int main(int argc, char* argv[])
   ros::NodeHandle controller_nh("");
   controller_manager::ControllerManager cm(&ridgeback, controller_nh);
   boost::thread controlT(&controlThread, ros::Rate(25), &ridgeback, &cm);
+
+  // Lighting control.
+  ridgeback_base::RidgebackLighting lighting(&nh);
 
   // Create diagnostic updater, to update itself on the ROS thread.
   ridgeback_base::RidgebackDiagnosticUpdater ridgeback_diagnostic_updater;

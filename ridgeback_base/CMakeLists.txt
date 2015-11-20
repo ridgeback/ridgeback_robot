@@ -18,6 +18,7 @@ add_executable(ridgeback_node
   src/ridgeback_hardware.cpp
   src/ridgeback_diagnostic_updater.cpp
   src/ridgeback_cooling.cpp
+  src/ridgeback_lighting.cpp
   )
 target_link_libraries(ridgeback_node ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 add_dependencies(ridgeback_node ridgeback_msgs_gencpp rosserial_msgs_gencpp)
