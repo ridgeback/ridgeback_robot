@@ -2,8 +2,8 @@
 Changelog for package ridgeback_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.2 (2015-11-20)
+------------------
 * Fixed dependency.
 * Contributors: Tony Baltovski
 
