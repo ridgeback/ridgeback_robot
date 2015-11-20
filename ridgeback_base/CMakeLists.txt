@@ -3,7 +3,7 @@ project(ridgeback_base)
 
 find_package(catkin REQUIRED COMPONENTS
   controller_manager diagnostic_updater geometry_msgs hardware_interface puma_motor_driver puma_motor_msgs nmea_msgs
-  realtime_tools roscpp roslaunch roslint rosserial_server sensor_msgs std_msgs teleop_twist_joy
+  realtime_tools roscpp rosserial_server sensor_msgs std_msgs teleop_twist_joy
   topic_tools)
 find_package(Boost REQUIRED COMPONENTS thread chrono)
 
@@ -29,6 +29,14 @@ install(DIRECTORY launch config
 install(PROGRAMS scripts/calibrate_compass scripts/compute_calibration
  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
-roslaunch_add_file_check(launch/base.launch)
-roslint_cpp()
-roslint_add_test()
+install(TARGETS ridgeback_node
+ DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
+if (CATKIN_ENABLE_TESTING)
+  find_package(roslaunch REQUIRED)
+  roslaunch_add_file_check(launch/base.launch)
+
+  find_package(roslint REQUIRED)
+  roslint_cpp()
+  roslint_add_test()
+endif()
