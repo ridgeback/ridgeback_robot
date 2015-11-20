@@ -2,8 +2,8 @@
 Changelog for package ridgeback_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.3 (2015-11-20)
+------------------
 * Install the ridgeback_node target.
 * Contributors: Mike Purvis
 
