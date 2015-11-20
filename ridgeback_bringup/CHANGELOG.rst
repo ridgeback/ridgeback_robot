@@ -2,6 +2,9 @@
 Changelog for package ridgeback_bringup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.1.2 (2015-11-20)
 ------------------
 
