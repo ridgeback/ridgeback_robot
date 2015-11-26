@@ -3,7 +3,7 @@
 import os
 import robot_upstart
 
-main_job = robot_upstart.Job(workspace_setup=os.environ['ROBOT_SETUP'])
+main_job = robot_upstart.Job(workspace_setup=os.environ['ROBOT_SETUP'],interface='br0')
 main_job.add(package="ridgeback_base", filename="launch/base.launch")
 main_job.add(package="ridgeback_bringup", filename="launch/accessories.launch")
 main_job.install()
@@ -11,9 +11,21 @@ main_job.install()
 
 class CanBridgeProvider(robot_upstart.providers.Generic):
     def generate_install(self):
-        return { "/etc/init/can-bridge.conf": {
-            "content": "foo"
+        return { "/etc/init/can-udp-bridge.conf": {
+            "content":  open(os.path.join(os.path.dirname(__file__), 'can-udp-bridge.conf'), 'r').read(),
+            "mode": 0o644
             }}
 
-can_bridge_job = robot_upstart.Job()
-can_bridge_job.install(Provider=CanBridgeProvider)
+class ConnmanProvider(robot_upstart.providers.Generic):
+    def generate_install(self):
+        return { "/etc/connman/main.conf": {
+            "content": """[General]
+NetworkInterfaceBlacklist=eth,br
+PreferredTechnologies=wifi""",
+            "mode": 0o644
+            }}
+
+
+other_job = robot_upstart.Job()
+other_job.install(Provider=CanBridgeProvider)
+other_job.install(Provider=ConnmanProvider)
