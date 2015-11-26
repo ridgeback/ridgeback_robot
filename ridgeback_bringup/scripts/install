@@ -3,7 +3,17 @@
 import os
 import robot_upstart
 
-j = robot_upstart.Job(workspace_setup=os.environ['ROBOT_SETUP'])
-j.add(package="ridgeback_base", filename="launch/base.launch")
-j.add(package="ridgeback_bringup", filename="launch/accessories.launch")
-j.install()
+main_job = robot_upstart.Job(workspace_setup=os.environ['ROBOT_SETUP'])
+main_job.add(package="ridgeback_base", filename="launch/base.launch")
+main_job.add(package="ridgeback_bringup", filename="launch/accessories.launch")
+main_job.install()
+
+
+class CanBridgeProvider(robot_upstart.providers.Generic):
+    def generate_install(self):
+        return { "/etc/init/can-bridge.conf": {
+            "content": "foo"
+            }}
+
+can_bridge_job = robot_upstart.Job()
+can_bridge_job.install(Provider=CanBridgeProvider)
