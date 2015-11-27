@@ -10,3 +10,7 @@ roslaunch_add_file_check(launch/accessories.launch)
 install(DIRECTORY launch
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
+
+install(PROGRAMS scripts/install
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
