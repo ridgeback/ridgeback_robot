@@ -13,7 +13,7 @@ main_job.install()
 
 class RidgebackExtras(robot_upstart.providers.Generic):
     def generate_install(self):
-        with open(find_in_workspaces(project="ridgeback_bringup", path="scripts/can-udp-bridge.conf")[0]) as f:
+        with open(find_in_workspaces(project="ridgeback_bringup", path="can-udp-bridge.conf")[0]) as f:
             can_conf_contents = f.read()
         return { "/etc/init/can-udp-bridge.conf": {
             "content":  can_conf_contents,
