@@ -6,7 +6,7 @@ in the URDF. See ridgeback_description/urdf/accessories.urdf.xacro.
 -->
 <launch>
   <!-- Primary LMS1xx-series LIDAR, base is front-facing but support for addtional rear. -->
-  <group if="$(optenv RIDGEBACK_FRONT_LASER 0)">
+  <group if="$(optenv RIDGEBACK_FRONT_SICK_LASER 0)">
     <node pkg="lms1xx" name="lms1xx_front" type="LMS1xx_node">
       <param name="host" value="$(optenv RIDGEBACK_FRONT_LASER_HOST 192.168.131.14)" />
       <param name="frame_id" value="front_laser" />
@@ -14,7 +14,7 @@ in the URDF. See ridgeback_description/urdf/accessories.urdf.xacro.
     </node>
   </group>
 
-  <group if="$(optenv RIDGEBACK_REAR_LASER 0)">
+  <group if="$(optenv RIDGEBACK_REAR_SICK_LASER 0)">
     <node pkg="lms1xx" name="lms1xx_rear" type="LMS1xx_node">
       <param name="host" value="$(optenv RIDGEBACK_REAR_HOST 192.168.131.13)" />
       <param name="frame_id" value="rear_laser" />
