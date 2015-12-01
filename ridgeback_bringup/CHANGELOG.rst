@@ -2,6 +2,12 @@
 Changelog for package ridgeback_bringup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Added manufacturer to laser environment variables.
+* Installed robot_upstart install script with connman and can-udp-bridge.conf.
+* Contributors: Mike Purvis, Tony Baltovski
+
 0.1.3 (2015-11-20)
 ------------------
 
