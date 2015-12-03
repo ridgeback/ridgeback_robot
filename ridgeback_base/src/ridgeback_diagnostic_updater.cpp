@@ -34,18 +34,20 @@
 #include <string>
 #include <sys/types.h>
 #include <ifaddrs.h>
+#include <unistd.h>
 
 #include "boost/algorithm/string/predicate.hpp"
 #include "diagnostic_updater/update_functions.h"
 #include "ridgeback_base/ridgeback_diagnostic_updater.h"
-
 
 namespace ridgeback_base
 {
 
 RidgebackDiagnosticUpdater::RidgebackDiagnosticUpdater()
 {
-  setHardwareID("unknown");
+  char hw_id[1024];
+  gethostname(hw_id, 1024);
+  setHardwareID(hw_id);
 
   add("General", this, &RidgebackDiagnosticUpdater::generalDiagnostics);
   add("Battery", this, &RidgebackDiagnosticUpdater::batteryDiagnostics);
