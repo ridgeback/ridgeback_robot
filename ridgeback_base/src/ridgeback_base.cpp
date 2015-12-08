@@ -45,7 +45,7 @@
 #include "ridgeback_base/ridgeback_hardware.h"
 #include "ridgeback_base/ridgeback_cooling.h"
 #include "ridgeback_base/ridgeback_lighting.h"
-#include "ridgeback_base/ridgeback_passive_joint.h"
+#include "ridgeback_base/passive_joint_publisher.h"
 #include "puma_motor_driver/diagnostic_updater.h"
 #include "ros/ros.h"
 #include "rosserial_server/serial_session.h"
