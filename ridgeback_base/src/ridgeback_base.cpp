@@ -31,18 +31,21 @@
  *
  */
 
+
 #include <string>
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>
 #include <boost/chrono.hpp>
 #include <boost/foreach.hpp>
+#include <boost/assign/list_of.hpp>
 
 #include "controller_manager/controller_manager.h"
 #include "ridgeback_base/ridgeback_diagnostic_updater.h"
 #include "ridgeback_base/ridgeback_hardware.h"
 #include "ridgeback_base/ridgeback_cooling.h"
 #include "ridgeback_base/ridgeback_lighting.h"
+#include "ridgeback_base/passive_joint_publisher.h"
 #include "puma_motor_driver/diagnostic_updater.h"
 #include "ros/ros.h"
 #include "rosserial_server/serial_session.h"
@@ -99,31 +102,6 @@ void canReadThread(ros::Rate rate, ridgeback_base::RidgebackHardware* robot)
   }
 }
 
-class PassiveJointPublisher
-{
-public:
-  PassiveJointPublisher(ros::NodeHandle& nh)
-  {
-    msg_.name.push_back("front_rocker");
-    msg_.position.push_back(0);
-    msg_.velocity.push_back(0);
-    msg_.effort.push_back(0);
-    pub_ = nh.advertise<sensor_msgs::JointState>("/joint_states", 1);
-    timer_ = nh.createTimer(ros::Duration(0.1), &PassiveJointPublisher::timerCb, this);
-  }
-
-  void timerCb(const ros::TimerEvent&)
-  {
-    msg_.header.stamp = ros::Time::now();
-    pub_.publish(msg_);
-  }
-
-private:
-  sensor_msgs::JointState msg_;
-  ros::Publisher pub_;
-  ros::Timer timer_;
-};
-
 int main(int argc, char* argv[])
 {
   // Initialize ROS node.
@@ -163,7 +141,8 @@ int main(int argc, char* argv[])
   puma_motor_driver::PumaMotorDriverDiagnosticUpdater puma_motor_driver_diagnostic_updater;
 
   // Joint state publisher for passive front axle.
-  PassiveJointPublisher passive_joint_publisher(nh);
+  ros::V_string passive_joint = boost::assign::list_of("front_rocker");
+  ridgeback_base::PassiveJointPublisher passive_joint_publisher(nh, passive_joint, 50);
 
   // Cooling control for the fans.
   ridgeback_base::RidgebackCooling cooling(&nh);
