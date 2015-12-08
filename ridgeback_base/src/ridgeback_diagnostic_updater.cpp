@@ -45,9 +45,8 @@ namespace ridgeback_base
 
 RidgebackDiagnosticUpdater::RidgebackDiagnosticUpdater()
 {
-  char hw_id[1024];
-  gethostname(hw_id, 1024);
-  setHardwareID(hw_id);
+  setHardwareID("unknown");
+  gethostname(hostname_, 1024);
 
   add("General", this, &RidgebackDiagnosticUpdater::generalDiagnostics);
   add("Battery", this, &RidgebackDiagnosticUpdater::batteryDiagnostics);
@@ -217,7 +216,7 @@ void RidgebackDiagnosticUpdater::statusCallback(const ridgeback_msgs::Status::Co
 {
   // Fresh data from the MCU, publish a diagnostic update.
   last_status_ = status;
-  setHardwareID(last_status_->hardware_id);
+  setHardwareID(hostname_ + '-' + last_status_->hardware_id);
   update();
 }
 

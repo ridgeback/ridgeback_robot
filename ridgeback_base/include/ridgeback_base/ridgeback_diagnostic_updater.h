@@ -72,6 +72,8 @@ private:
   diagnostic_updater::TopicDiagnostic* imu_diagnostic_;
   ros::Subscriber imu_sub_;
 
+  char hostname_[1024];
+
   std::string wireless_interface_;
   ros::Timer wireless_monitor_timer_;
   ros::Publisher wifi_connected_pub_;
