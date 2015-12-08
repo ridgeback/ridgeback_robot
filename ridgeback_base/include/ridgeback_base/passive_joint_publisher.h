@@ -31,8 +31,8 @@
  *
  */
 
-#ifndef RIDGEBACK_BASE_RIDGEBACK_PASSIVE_JOINT_H
-#define RIDGEBACK_BASE_RIDGEBACK_PASSIVE_JOINT_H
+#ifndef RIDGEBACK_BASE_PASSIVE_JOINT_PUBLISHER_H
+#define RIDGEBACK_BASE_PASSIVE_JOINT_PUBLISHER_H
 
 #include "ros/ros.h"
 #include "sensor_msgs/JointState.h"
@@ -70,4 +70,4 @@ namespace ridgeback_base
 
 }  // namespace ridgeback_base
 
-#endif  // RIDGEBACK_BASE_RIDGEBACK_PASSIVE_JOINT_H
+#endif  // RIDGEBACK_BASE_PASSIVE_JOINT_PUBLISHER_H
