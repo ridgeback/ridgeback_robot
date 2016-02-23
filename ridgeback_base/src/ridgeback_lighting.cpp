@@ -35,8 +35,8 @@ namespace States
   {
     Idle = 0,
     Driving,
-    Charging,
     Charged,
+    Charging,
     LowBattery,
     NeedsReset,
     Fault,
@@ -223,13 +223,13 @@ void RidgebackLighting::updateState()
   {
     state_ = States::LowBattery;
   }
-  else if (mcu_status_msg_.charger_connected == true)
-  {
-    state_ = States::Charging;
-  }
   else if (mcu_status_msg_.charging_complete == true)
   {
     state_ = States::Charged;
+  }
+  else if (mcu_status_msg_.charger_connected == true)
+  {
+    state_ = States::Charging;
   }
   else if (cmd_vel_msg_.linear.x != 0.0 ||
            cmd_vel_msg_.linear.y != 0.0 ||
