@@ -2,8 +2,8 @@
 Changelog for package ridgeback_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.5 (2016-03-02)
+------------------
 * Fixed state order for lighting.
 * Separated passive joint into header.
 * Contributors: Tony Baltovski

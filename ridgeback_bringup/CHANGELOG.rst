@@ -2,8 +2,8 @@
 Changelog for package ridgeback_bringup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.5 (2016-03-02)
+------------------
 * Removed br0 interface from upstart job to default to hostname.
 * Contributors: Tony Baltovski
 
