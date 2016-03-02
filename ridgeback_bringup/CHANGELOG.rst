@@ -2,6 +2,11 @@
 Changelog for package ridgeback_bringup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Removed br0 interface from upstart job to default to hostname.
+* Contributors: Tony Baltovski
+
 0.1.4 (2015-12-01)
 ------------------
 * Added manufacturer to laser environment variables.
