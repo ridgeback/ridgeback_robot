@@ -10,6 +10,8 @@ in the URDF. See ridgeback_description/urdf/accessories.urdf.xacro.
     <node pkg="urg_node" name="urg_front" type="urg_node">
       <param name="ip_address" value="$(optenv RIDGEBACK_FRONT_LASER_HOST 192.168.131.14)" />
       <param name="frame_id" value="front_laser" />
+      <param name="angle_min" value="-2.35619" />
+      <param name="angle_max" value="2.35619" />
       <remap from="scan" to="front/scan" />
     </node>
   </group>
@@ -18,6 +20,8 @@ in the URDF. See ridgeback_description/urdf/accessories.urdf.xacro.
     <node pkg="urg_node" name="urg_rear" type="urg_node">
       <param name="ip_address" value="$(optenv RIDGEBACK_REAR_LASER_HOST 192.168.131.13)" />
       <param name="frame_id" value="rear_laser" />
+      <param name="angle_min" value="-2.35619" />
+      <param name="angle_max" value="2.35619" />
       <remap from="scan" to="rear/scan" />
     </node>
   </group>
