@@ -2,8 +2,8 @@
 Changelog for package ridgeback_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.6 (2016-04-22)
+------------------
 * Combined hostname and version for hardware ID.
 * Fixed initialization of constant doubles.
 * Added hardware ID based hostname.
