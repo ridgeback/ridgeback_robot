@@ -2,6 +2,12 @@
 Changelog for package ridgeback_bringup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Specified max/min angles for Hokuyo UST-10LX.
+* Added support for Hokuyo URG-10LX.
+* Contributors: Tony Baltovski
+
 0.1.5 (2016-03-02)
 ------------------
 * Removed br0 interface from upstart job to default to hostname.
