@@ -34,11 +34,11 @@
 #include <string>
 #include <sys/types.h>
 #include <ifaddrs.h>
+#include <unistd.h>
 
 #include "boost/algorithm/string/predicate.hpp"
 #include "diagnostic_updater/update_functions.h"
 #include "ridgeback_base/ridgeback_diagnostic_updater.h"
-
 
 namespace ridgeback_base
 {
@@ -46,6 +46,7 @@ namespace ridgeback_base
 RidgebackDiagnosticUpdater::RidgebackDiagnosticUpdater()
 {
   setHardwareID("unknown");
+  gethostname(hostname_, 1024);
 
   add("General", this, &RidgebackDiagnosticUpdater::generalDiagnostics);
   add("Battery", this, &RidgebackDiagnosticUpdater::batteryDiagnostics);
@@ -215,7 +216,7 @@ void RidgebackDiagnosticUpdater::statusCallback(const ridgeback_msgs::Status::Co
 {
   // Fresh data from the MCU, publish a diagnostic update.
   last_status_ = status;
-  setHardwareID(last_status_->hardware_id);
+  setHardwareID(hostname_ + '-' + last_status_->hardware_id);
   update();
 }
 
