@@ -61,9 +61,9 @@ private:
   ridgeback_msgs::Fans cmd_fans_msg_;
   double last_motion_cmd_time_;
 
-  static const double LINEAR_VEL_THRESHOLD = 0.1;
-  static const double ANGULAR_VEL_THRESHOLD = 0.4;
-  static const double MOITON_COMMAND_TIMEOUT = 3.0;
+  static const double LINEAR_VEL_THRESHOLD;
+  static const double ANGULAR_VEL_THRESHOLD;
+  static const double MOITON_COMMAND_TIMEOUT;
 
   void statusCallback(const ridgeback_msgs::Status::ConstPtr& status);
   void cmdVelCallback(const geometry_msgs::Twist::ConstPtr& twist);

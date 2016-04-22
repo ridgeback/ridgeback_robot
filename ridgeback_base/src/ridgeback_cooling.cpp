@@ -37,6 +37,10 @@
 namespace ridgeback_base
 {
 
+const double RidgebackCooling::LINEAR_VEL_THRESHOLD = 0.1;  // m/s
+const double RidgebackCooling::ANGULAR_VEL_THRESHOLD = 0.4;  // rad/s
+const double RidgebackCooling::MOITON_COMMAND_TIMEOUT = 3.0;  // Seconds.
+
 RidgebackCooling::RidgebackCooling(ros::NodeHandle* nh) :
   nh_(nh),
   charger_disconnected_(true)
