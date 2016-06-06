@@ -45,7 +45,7 @@ namespace ridgeback_base
 class RidgebackCooling
 {
 public:
-  RidgebackCooling(ros::NodeHandle* nh);
+  explicit RidgebackCooling(ros::NodeHandle* nh);
 
 private:
   ros::NodeHandle* nh_;
@@ -68,7 +68,6 @@ private:
   void statusCallback(const ridgeback_msgs::Status::ConstPtr& status);
   void cmdVelCallback(const geometry_msgs::Twist::ConstPtr& twist);
   void cmdFansCallback(const ros::TimerEvent&);
-
 };
 
 }  // namespace ridgeback_base

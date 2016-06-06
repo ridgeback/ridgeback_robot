@@ -40,33 +40,33 @@
 namespace ridgeback_base
 {
 
-  class PassiveJointPublisher
+class PassiveJointPublisher
+{
+public:
+  PassiveJointPublisher(ros::NodeHandle& nh, ros::V_string& joints, int frequency)
   {
-  public:
-    PassiveJointPublisher(ros::NodeHandle& nh, ros::V_string& joints, int frequency)
+    for (int i = 0; i < joints.size(); i++)
     {
-      for (int i = 0; i < joints.size(); i++)
-      {
-        msg_.name.push_back(joints[i]);
-        msg_.position.push_back(0);
-        msg_.velocity.push_back(0);
-        msg_.effort.push_back(0);
-      }
-      pub_ = nh.advertise<sensor_msgs::JointState>("/joint_states", 1);
-      timer_ = nh.createTimer(ros::Duration(1.0/frequency), &PassiveJointPublisher::timerCb, this);
+      msg_.name.push_back(joints[i]);
+      msg_.position.push_back(0);
+      msg_.velocity.push_back(0);
+      msg_.effort.push_back(0);
     }
+    pub_ = nh.advertise<sensor_msgs::JointState>("/joint_states", 1);
+    timer_ = nh.createTimer(ros::Duration(1.0/frequency), &PassiveJointPublisher::timerCb, this);
+  }
 
-    void timerCb(const ros::TimerEvent&)
-    {
-      msg_.header.stamp = ros::Time::now();
-      pub_.publish(msg_);
-    }
+  void timerCb(const ros::TimerEvent&)
+  {
+    msg_.header.stamp = ros::Time::now();
+    pub_.publish(msg_);
+  }
 
-  private:
-    sensor_msgs::JointState msg_;
-    ros::Publisher pub_;
-    ros::Timer timer_;
-  };
+private:
+  sensor_msgs::JointState msg_;
+  ros::Publisher pub_;
+  ros::Timer timer_;
+};
 
 }  // namespace ridgeback_base
 

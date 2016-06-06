@@ -77,7 +77,7 @@ void RidgebackDiagnosticUpdater::generalDiagnostics(diagnostic_updater::Diagnost
 {
   stat.addf("MCU uptime", "%d seconds", last_status_->mcu_uptime.toSec());
   stat.add("External stop status", last_status_->external_stop_present ? "present" : "absent");
-  stat.add("Run/stop status", last_status_->external_stop_present ? "running" : "stopped" );
+  stat.add("Run/stop status", last_status_->external_stop_present ? "running" : "stopped");
 
   if (!last_status_->drivers_active)
   {

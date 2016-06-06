@@ -72,7 +72,6 @@ void RidgebackCooling::statusCallback(const ridgeback_msgs::Status::ConstPtr& st
     cmd_fans_msg_.fans[ridgeback_msgs::Fans::CHARGER_BAY_EXHAUST] = ridgeback_msgs::Fans::FAN_ON_LOW;
     charger_disconnected_ = true;
   }
-
 }
 void RidgebackCooling::cmdVelCallback(const geometry_msgs::Twist::ConstPtr& twist)
 {

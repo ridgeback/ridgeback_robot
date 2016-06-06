@@ -43,7 +43,7 @@ namespace States
     Stopped,
     NumberOfStates
   };
-}
+}  // namespace States
 typedef States::State State;
 
 namespace Colours
@@ -70,7 +70,7 @@ namespace Colours
     White_M = 0xAAAAAA,
     White_L = 0x555555
   };
-}
+}  // namespace Colours
 typedef Colours::Colour Colour;
 
 
@@ -91,7 +91,7 @@ RidgebackLighting::RidgebackLighting(ros::NodeHandle* nh) :
   pub_timer_ = nh_->createTimer(ros::Duration(1.0/5), &RidgebackLighting::timerCb, this);
   user_timeout_ = nh_->createTimer(ros::Duration(1.0/1), &RidgebackLighting::userTimeoutCb, this);
 
-  using namespace Colours;
+  using namespace Colours;  // NOLINT(build/namespaces)
   patterns_.stopped.push_back(boost::assign::list_of(Red_H)(Red_H)(Red_H)(Red_H)(Red_H)(Red_H)(Red_H)(Red_H));
   patterns_.stopped.push_back(boost::assign::list_of(Off)(Off)(Off)(Off)(Off)(Off)(Off)(Off));
 
@@ -313,4 +313,4 @@ void RidgebackLighting::updatePattern()
   current_pattern_count_++;
 }
 
-} // namespace ridgeback_base
+}  // namespace ridgeback_base

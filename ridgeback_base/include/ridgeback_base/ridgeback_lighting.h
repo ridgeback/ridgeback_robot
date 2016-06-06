@@ -27,6 +27,8 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 #ifndef RIDGEBACK_BASE_RIDGEBACK_LIGHTING_H
 #define RIDGEBACK_BASE_RIDGEBACK_LIGHTING_H
 
+#include<vector>
+
 #include "ros/ros.h"
 
 #include "geometry_msgs/Twist.h"
@@ -44,7 +46,7 @@ typedef std::vector<pattern> LightsPatterns;
 class RidgebackLighting
 {
 public:
-  RidgebackLighting(ros::NodeHandle* nh);
+  explicit RidgebackLighting(ros::NodeHandle* nh);
 
 private:
   ros::NodeHandle* nh_;
@@ -80,7 +82,8 @@ private:
     LightsPatterns charging;
     LightsPatterns driving;
     LightsPatterns idle;
-  } patterns_;
+  }
+  patterns_;
 
   void setRGB(ridgeback_msgs::RGB* rgb, uint32_t colour);
   void setLights(ridgeback_msgs::Lights* lights, uint32_t pattern[8]);
