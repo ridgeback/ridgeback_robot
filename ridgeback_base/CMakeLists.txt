@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(ridgeback_base)
 
 find_package(catkin REQUIRED COMPONENTS
-  controller_manager diagnostic_updater geometry_msgs hardware_interface puma_motor_driver puma_motor_msgs nmea_msgs
+  controller_manager diagnostic_updater geometry_msgs hardware_interface puma_motor_driver puma_motor_msgs
   realtime_tools roscpp rosserial_server sensor_msgs std_msgs teleop_twist_joy
   topic_tools)
 find_package(Boost REQUIRED COMPONENTS thread chrono)
