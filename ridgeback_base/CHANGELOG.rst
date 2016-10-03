@@ -2,6 +2,11 @@
 Changelog for package ridgeback_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Removed GPS dependencies.
+* Contributors: Johannes Meyer, Tony Baltovski
+
 0.1.6 (2016-04-22)
 ------------------
 * Combined hostname and version for hardware ID.

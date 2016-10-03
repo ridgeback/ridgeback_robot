@@ -2,6 +2,9 @@
 Changelog for package ridgeback_bringup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.1.6 (2016-04-22)
 ------------------
 * Specified max/min angles for Hokuyo UST-10LX.
