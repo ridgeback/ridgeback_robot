@@ -4,8 +4,10 @@
   <version>0.1.7</version>
   <description>Ridgeback's mobility and sensor base.</description>
 
-  <maintainer email="mpurvis@clearpathrobotics.com">Mike Purvis</maintainer>
   <author email="mpurvis@clearpathrobotics.com">Mike Purvis</author>
+  <author email="tbaltovski@clearpathrobotics.com">Tony Baltovski</author>
+
+  <maintainer email="tbaltovski@clearpathrobotics.com">Tony Baltovski</maintainer>
 
   <license>BSD</license>
 

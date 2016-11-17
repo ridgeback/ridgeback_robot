@@ -3,6 +3,7 @@
  *  \file
  *  \brief      Class representing Ridgeback hardware
  *  \author     Mike Purvis <mpurvis@clearpathrobotics.com>
+ *  \author     Tony Baltovski <tbaltovski@clearpathrobotics.com>
  *  \copyright  Copyright (c) 2013, Clearpath Robotics, Inc.
  *
  * Redistribution and use in source and binary forms, with or without

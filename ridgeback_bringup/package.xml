@@ -4,7 +4,10 @@
   <version>0.1.7</version>
   <description>Scripts for installing Ridgeback's robot software.</description>
 
-  <maintainer email="mpurvis@clearpathrobotics.com">Mike Purvis</maintainer>
+  <author email="mpurvis@clearpathrobotics.com">Mike Purvis</author>
+  <author email="tbaltovski@clearpathrobotics.com">Tony Baltovski</author>
+
+  <maintainer email="tbaltovski@clearpathrobotics.com">Tony Baltovski</maintainer>
 
   <license>BSD</license>
 
