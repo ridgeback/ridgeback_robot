@@ -191,7 +191,7 @@ void RidgebackDiagnosticUpdater::temperatureDiagnostics(diagnostic_updater::Diag
   }
   else if (last_status_->pcb_temperature > 60.0)
   {
-    stat.summary(diagnostic_msgs::DiagnosticStatus::WARN, "PCB temperature geting warm");
+    stat.summary(diagnostic_msgs::DiagnosticStatus::WARN, "PCB temperature getting warm.");
   }
   else
   {
@@ -204,7 +204,7 @@ void RidgebackDiagnosticUpdater::temperatureDiagnostics(diagnostic_updater::Diag
   }
   else if (last_status_->mcu_temperature > 60.0)
   {
-    stat.summary(diagnostic_msgs::DiagnosticStatus::WARN, "MCU temperature geting warm");
+    stat.summary(diagnostic_msgs::DiagnosticStatus::WARN, "MCU temperature getting warm.");
   }
   else
   {
