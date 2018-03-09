@@ -3,7 +3,7 @@ project(ridgeback_base)
 
 find_package(catkin REQUIRED COMPONENTS
   controller_manager diagnostic_updater geometry_msgs hardware_interface puma_motor_driver puma_motor_msgs
-  realtime_tools roscpp rosserial_server sensor_msgs std_msgs teleop_twist_joy
+  realtime_tools roscpp rosserial_server sensor_msgs std_msgs teleop_twist_joy ridgeback_msgs
   topic_tools)
 find_package(Boost REQUIRED COMPONENTS thread chrono)
 
