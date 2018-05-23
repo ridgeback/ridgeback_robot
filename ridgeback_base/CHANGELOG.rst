@@ -2,6 +2,14 @@
 Changelog for package ridgeback_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* [ridgeback_base] Added absolute value checking for fans.
+* [ridgeback_base] Fixed a typo.
+* Updated maintainer.
+* Fixed temperature warning for PCB and MCU temperature.
+* Contributors: Tony Baltovski
+
 0.1.7 (2016-10-03)
 ------------------
 * Removed GPS dependencies.
