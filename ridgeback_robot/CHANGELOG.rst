@@ -2,6 +2,12 @@
 Changelog for package ridgeback_robot
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Updated to package format 2.
+* Updated maintainer.
+* Contributors: Tony Baltovski
+
 0.1.7 (2016-10-03)
 ------------------
 

@@ -2,6 +2,17 @@
 Changelog for package ridgeback_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* [ridgeback_base] Added absolute value checking for fans.
+* Updated to package format 2.
+* [ridgeback_base] Switched to rosserial_server_udp.
+* Updated bringup for kinetic
+* [ridgeback_base] Fixed a typo.
+* Updated maintainer.
+* Fixed temperature warning for PCB and MCU temperature.
+* Contributors: Dave Niewinski, Tony Baltovski
+
 0.1.7 (2016-10-03)
 ------------------
 * Removed GPS dependencies.
