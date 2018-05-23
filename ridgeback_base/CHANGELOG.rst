@@ -2,8 +2,8 @@
 Changelog for package ridgeback_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.8 (2018-05-23)
+------------------
 * [ridgeback_base] Added absolute value checking for fans.
 * [ridgeback_base] Fixed a typo.
 * Updated maintainer.
