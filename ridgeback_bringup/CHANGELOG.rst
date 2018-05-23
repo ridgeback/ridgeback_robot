@@ -2,8 +2,8 @@
 Changelog for package ridgeback_bringup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.2.0 (2018-05-23)
+------------------
 * Updated to package format 2.
 * [ridgeback_base] Switched to rosserial_server_udp.
 * Updated bringup for kinetic
