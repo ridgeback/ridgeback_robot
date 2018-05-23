@@ -31,6 +31,8 @@
  *
  */
 
+#include <math.h>
+
 #include "ridgeback_base/ridgeback_cooling.h"
 
 
@@ -75,9 +77,9 @@ void RidgebackCooling::statusCallback(const ridgeback_msgs::Status::ConstPtr& st
 }
 void RidgebackCooling::cmdVelCallback(const geometry_msgs::Twist::ConstPtr& twist)
 {
-  if (twist->linear.x >= LINEAR_VEL_THRESHOLD ||
-      twist->linear.y >= LINEAR_VEL_THRESHOLD ||
-      twist->angular.z >= ANGULAR_VEL_THRESHOLD)
+  if (fabs(twist->linear.x) >= LINEAR_VEL_THRESHOLD ||
+      fabs(twist->linear.y) >= LINEAR_VEL_THRESHOLD ||
+      fabs(twist->angular.z) >= ANGULAR_VEL_THRESHOLD)
   {
     for (int i = 0; i < 6; i++)
     {
@@ -98,6 +100,5 @@ void RidgebackCooling::cmdFansCallback(const ros::TimerEvent&)
   }
   cmd_fans_pub_.publish(cmd_fans_msg_);
 }
-
 
 }  // namespace ridgeback_base
