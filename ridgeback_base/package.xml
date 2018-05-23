@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<package>
+<package format="2">
   <name>ridgeback_base</name>
   <version>0.1.7</version>
   <description>Ridgeback's mobility and sensor base.</description>
@@ -15,43 +15,34 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <build_depend>controller_manager</build_depend>
-  <build_depend>diagnostic_updater</build_depend>
-  <build_depend>geometry_msgs</build_depend>
   <build_depend>hardware_interface</build_depend>
-  <build_depend>ridgeback_msgs</build_depend>
-  <build_depend>puma_motor_msgs</build_depend>
-  <build_depend>puma_motor_driver</build_depend>
-  <build_depend>realtime_tools</build_depend>
   <build_depend>roscpp</build_depend>
-  <build_depend>roslaunch</build_depend>
-  <build_depend>roslint</build_depend>
-  <build_depend>rosserial_server</build_depend>
-  <build_depend>sensor_msgs</build_depend>
-  <build_depend>std_msgs</build_depend>
-  <build_depend>teleop_twist_joy</build_depend>
-  <build_depend>topic_tools</build_depend>
 
-  <run_depend>controller_manager</run_depend>
-  <run_depend>diagnostic_aggregator</run_depend>
-  <run_depend>diagnostic_updater</run_depend>
-  <run_depend>diff_drive_controller</run_depend>
-  <run_depend>geometry_msgs</run_depend>
-  <run_depend>imu_filter_madgwick</run_depend>
-  <run_depend>ridgeback_control</run_depend>
-  <run_depend>ridgeback_description</run_depend>
-  <run_depend>ridgeback_msgs</run_depend>
-  <run_depend>puma_motor_msgs</run_depend>
-  <run_depend>puma_motor_driver</run_depend>
-  <run_depend>python-scipy</run_depend>
-  <run_depend>realtime_tools</run_depend>
-  <run_depend>rosserial_python</run_depend>
-  <run_depend>rosserial_server</run_depend>
-  <run_depend>sensor_msgs</run_depend>
-  <run_depend>teleop_twist_joy</run_depend>
-  <run_depend>tf</run_depend>
-  <run_depend>topic_tools</run_depend>
-  <run_depend>socat</run_depend>
+  <depend>controller_manager</depend>
+  <depend>diagnostic_updater</depend>
+  <depend>geometry_msgs</depend>
+  <depend>ridgeback_msgs</depend>
+  <depend>puma_motor_msgs</depend>
+  <depend>puma_motor_driver</depend>
+  <depend>realtime_tools</depend>
+  <depend>rosserial_server</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+
+  <exec_depend>diagnostic_aggregator</exec_depend>
+  <exec_depend>diff_drive_controller</exec_depend>
+  <exec_depend>imu_filter_madgwick</exec_depend>
+  <exec_depend>ridgeback_control</exec_depend>
+  <exec_depend>ridgeback_description</exec_depend>
+  <exec_depend>python-scipy</exec_depend>
+  <exec_depend>rosserial_python</exec_depend>
+  <exec_depend>teleop_twist_joy</exec_depend>
+  <exec_depend>tf</exec_depend>
+  <exec_depend>topic_tools</exec_depend>
+  <exec_depend>socat</exec_depend>
+
+  <test_depend>roslaunch</test_depend>
+  <test_depend>roslint</test_depend>
 
   <export>
   </export>

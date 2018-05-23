@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<package>
+<package format="2">
   <name>ridgeback_robot</name>
   <version>0.1.7</version>
   <description>Metapackage of software to install on Ridgeback.</description>
@@ -15,8 +15,8 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <run_depend>ridgeback_bringup</run_depend>
-  <run_depend>ridgeback_firmware</run_depend>
+  <exec_depend>ridgeback_bringup</exec_depend>
+  <exec_depend>ridgeback_firmware</exec_depend>
 
   <export>
     <metapackage />

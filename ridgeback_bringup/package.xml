@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<package>
+<package format="2">
   <name>ridgeback_bringup</name>
   <version>0.1.7</version>
   <description>Scripts for installing Ridgeback's robot software.</description>
@@ -14,14 +14,15 @@
   <url type="website">http://wiki.ros.org/Robots/Ridgeback</url>
 
   <buildtool_depend>catkin</buildtool_depend>
-  <build_depend>roslaunch</build_depend>
 
-  <run_depend>cob_sick_s300</run_depend>
-  <run_depend>lms1xx</run_depend>
-  <run_depend>microstrain_3dmgx2_imu</run_depend>
-  <run_depend>ridgeback_base</run_depend>
-  <run_depend version_gte="0.1.1">robot_upstart</run_depend>
-  <run_depend>urg_node</run_depend>
+  <exec_depend>cob_sick_s300</exec_depend>
+  <exec_depend>lms1xx</exec_depend>
+  <exec_depend>microstrain_3dmgx2_imu</exec_depend>
+  <exec_depend>ridgeback_base</exec_depend>
+  <exec_depend version_gte="0.1.1">robot_upstart</exec_depend>
+  <exec_depend>urg_node</exec_depend>
+
+  <test_depend>roslaunch</test_depend>
 
   <export>
   </export>
