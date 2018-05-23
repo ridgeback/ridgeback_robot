@@ -49,7 +49,10 @@
 #include "ridgeback_base/passive_joint_publisher.h"
 #include "puma_motor_driver/diagnostic_updater.h"
 #include "ros/ros.h"
-#include "rosserial_server/serial_session.h"
+#include "rosserial_server/udp_socket_session.h"
+
+using boost::asio::ip::udp;
+using boost::asio::ip::address;
 
 typedef boost::chrono::steady_clock time_source;
 
@@ -112,10 +115,8 @@ int main(int argc, char* argv[])
   // Create the socket rosserial server in a background ASIO event loop.
   boost::asio::io_service io_service;
 
-  // For use the serial rosserial server to connect over socat. Future work
-  // will create a native UDP rosserial server that this can migrate to. Specify
-  // baud rate because we have to, but in reality it doesn't matter.
-  new rosserial_server::SerialSession(io_service, "/dev/ttyrosserial", 115200);
+  new rosserial_server::UdpSocketSession(io_service, udp::endpoint(address::from_string("192.168.131.1"), 11411),
+                                         udp::endpoint(address::from_string("192.168.131.2"), 11411));
   boost::thread(boost::bind(&boost::asio::io_service::run, &io_service));
 
   std::string canbus_dev;

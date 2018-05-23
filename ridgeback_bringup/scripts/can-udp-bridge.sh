@@ -4,6 +4,3 @@ sleep 1
 slcand -o -c -F -s8 /dev/ttycan0 can0 &
 sleep 1
 ifconfig can0 up
-sleep 1
-socat udp4-datagram:192.168.131.2:11411,bind=:11411,range=192.168.131.1/24 pty,link=/dev/ttyrosserial,perm-late=666 &
-
