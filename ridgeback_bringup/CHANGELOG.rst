@@ -2,8 +2,8 @@
 Changelog for package ridgeback_bringup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.2.1 (2018-08-02)
+------------------
 * Updated default IPs for Kinetic
 * [ridgeback_bringup] Fixed test dep.
 * Contributors: Dave Niewinski, Tony Baltovski
