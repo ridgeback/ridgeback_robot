@@ -2,6 +2,11 @@
 Changelog for package ridgeback_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* [ridgeback_base] Updated compute_calibration to use a MagneticField message.
+* Contributors: Tony Baltovski
+
 0.1.8 (2018-05-23)
 ------------------
 * [ridgeback_base] Added absolute value checking for fans.
