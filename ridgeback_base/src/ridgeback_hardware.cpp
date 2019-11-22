@@ -230,7 +230,7 @@ void RidgebackHardware::command()
 
 std::vector<puma_motor_driver::Driver>& RidgebackHardware::getDrivers()
 {
-    return drivers_;
+  return drivers_;
 }
 
 }  // namespace ridgeback_base

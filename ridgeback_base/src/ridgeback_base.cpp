@@ -114,10 +114,20 @@ int main(int argc, char* argv[])
 
   // Create the socket rosserial server in a background ASIO event loop.
   boost::asio::io_service io_service;
+  rosserial_server::UdpSocketSession* socket;
+  boost::thread socket_thread;
 
-  new rosserial_server::UdpSocketSession(io_service, udp::endpoint(address::from_string("192.168.131.1"), 11411),
-                                         udp::endpoint(address::from_string("192.168.131.2"), 11411));
-  boost::thread(boost::bind(&boost::asio::io_service::run, &io_service));
+  bool use_mcu = true;
+  pnh.param<bool>("use_mcu", use_mcu, true);
+
+  if (use_mcu)
+  {
+    socket = new rosserial_server::UdpSocketSession(io_service,
+                                                    udp::endpoint(address::from_string("192.168.131.1"), 11411),
+                                                    udp::endpoint(address::from_string("192.168.131.2"), 11411));
+    socket_thread = boost::thread(boost::bind(&boost::asio::io_service::run, &io_service));
+  }
+
 
   std::string canbus_dev;
   pnh.param<std::string>("canbus_dev", canbus_dev, "can0");
@@ -136,7 +146,11 @@ int main(int argc, char* argv[])
   boost::thread controlT(&controlThread, ros::Rate(25), &ridgeback, &cm);
 
   // Lighting control.
-  ridgeback_base::RidgebackLighting lighting(&nh);
+  ridgeback_base::RidgebackLighting* lighting;
+  if (use_mcu)
+  {
+    lighting = new ridgeback_base::RidgebackLighting(&nh);
+  }
 
   // Create diagnostic updater, to update itself on the ROS thread.
   ridgeback_base::RidgebackDiagnosticUpdater ridgeback_diagnostic_updater;
@@ -147,7 +161,11 @@ int main(int argc, char* argv[])
   ridgeback_base::PassiveJointPublisher passive_joint_publisher(nh, passive_joint, 50);
 
   // Cooling control for the fans.
-  ridgeback_base::RidgebackCooling cooling(&nh);
+  ridgeback_base::RidgebackCooling* cooling;
+  if (use_mcu)
+  {
+    cooling = new ridgeback_base::RidgebackCooling(&nh);
+  }
 
   // Foreground ROS spinner for ROS callbacks, including rosserial, diagnostics
   ros::spin();

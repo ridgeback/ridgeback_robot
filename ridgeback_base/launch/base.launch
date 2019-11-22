@@ -12,7 +12,9 @@
     </rosparam>
   </node>
 
-  <node pkg="ridgeback_base" type="ridgeback_node" name="ridgeback_node" output="screen" />
+  <node pkg="ridgeback_base" type="ridgeback_node" name="ridgeback_node" output="screen" >
+    <param name="use_mcu" type="bool" value="$(optenv RIDGEBACK_USE_MCU 1)" />
+  </node>
 
   <!-- Mecanum controller and basic localization -->
   <include file="$(find ridgeback_control)/launch/control.launch" />
