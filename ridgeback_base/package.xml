@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>ridgeback_base</name>
-  <version>0.2.3</version>
+  <version>0.2.4</version>
   <description>Ridgeback's mobility and sensor base.</description>
 
   <author email="mpurvis@clearpathrobotics.com">Mike Purvis</author>

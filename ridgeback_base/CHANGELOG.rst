@@ -2,8 +2,8 @@
 Changelog for package ridgeback_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.2.4 (2019-11-22)
+------------------
 * Merge pull request `#26 <https://github.com/ridgeback/ridgeback_robot/issues/26>`_ from ridgeback/RPSW-119
   Added the ability to disable using the MCU
 * [ridgeback_base] Added param type for use_mcu.
