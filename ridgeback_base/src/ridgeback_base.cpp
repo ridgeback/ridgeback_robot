@@ -119,6 +119,7 @@ int main(int argc, char* argv[])
 
   bool use_mcu = true;
   pnh.param<bool>("use_mcu", use_mcu, true);
+
   if (use_mcu)
   {
     socket = new rosserial_server::UdpSocketSession(io_service,
@@ -145,7 +146,11 @@ int main(int argc, char* argv[])
   boost::thread controlT(&controlThread, ros::Rate(25), &ridgeback, &cm);
 
   // Lighting control.
-  ridgeback_base::RidgebackLighting lighting(&nh);
+  ridgeback_base::RidgebackLighting* lighting;
+  if (use_mcu)
+  {
+    lighting = new ridgeback_base::RidgebackLighting(&nh);
+  }
 
   // Create diagnostic updater, to update itself on the ROS thread.
   ridgeback_base::RidgebackDiagnosticUpdater ridgeback_diagnostic_updater;
@@ -156,7 +161,11 @@ int main(int argc, char* argv[])
   ridgeback_base::PassiveJointPublisher passive_joint_publisher(nh, passive_joint, 50);
 
   // Cooling control for the fans.
-  ridgeback_base::RidgebackCooling cooling(&nh);
+  ridgeback_base::RidgebackCooling* cooling;
+  if (use_mcu)
+  {
+    cooling = new ridgeback_base::RidgebackCooling(&nh);
+  }
 
   // Foreground ROS spinner for ROS callbacks, including rosserial, diagnostics
   ros::spin();
