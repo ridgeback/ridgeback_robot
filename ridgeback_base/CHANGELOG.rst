@@ -2,6 +2,15 @@
 Changelog for package ridgeback_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#26 <https://github.com/ridgeback/ridgeback_robot/issues/26>`_ from ridgeback/RPSW-119
+  Added the ability to disable using the MCU
+* [ridgeback_base] Added param type for use_mcu.
+* [ridgeback_base] Added lighting and cooling under use_mcu flag.
+* [ridgeback_base] Added envar for using MCU.
+* Contributors: Tony Baltovski
+
 0.2.3 (2019-03-23)
 ------------------
 * [ridgeback_base] Updated compute_calibration to use a MagneticField message.
