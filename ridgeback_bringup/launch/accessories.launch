@@ -75,4 +75,15 @@ in the URDF. See ridgeback_description/urdf/accessories.urdf.xacro.
       <remap from="imu" to="$(optenv RIDGEBACK_MICROSTRAIN_IMU_TOPIC upgraded)_imu" />
     </node>
   </group>
+
+  <group if="$(optenv RIDGEBACK_VALENCE_BMS 0)" ns="bms" >
+    <node pkg="socketcan_bridge" type="socketcan_to_topic_node" name="socketcan_to_topic_node" output="screen">
+      <param name="can_device" value="can1"/>
+      <remap from="received_messages" to="/canbus/rx"/>
+    </node>
+    <node pkg="valence_bms_driver" type="valence_bms_driver_node" name="valence_bms" output="screen">
+      <param name="bms_id" value="0"/>
+    </node>
+  </group>
+
 </launch>
