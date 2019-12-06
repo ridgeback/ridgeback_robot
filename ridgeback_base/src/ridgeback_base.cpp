@@ -75,6 +75,7 @@ void controlThread(ros::Rate rate, ridgeback_base::RidgebackHardware* robot, con
     }
     else
     {
+      robot->canRead();
       robot->configure();
     }
 
@@ -89,6 +90,7 @@ void controlThread(ros::Rate rate, ridgeback_base::RidgebackHardware* robot, con
     }
     else
     {
+      robot->canRead();
       robot->verify();
     }
 
@@ -101,7 +103,10 @@ void canReadThread(ros::Rate rate, ridgeback_base::RidgebackHardware* robot)
 {
   while (1)
   {
-    robot->canRead();
+    if (robot->isActive())
+    {
+      robot->canRead();
+    }
     rate.sleep();
   }
 }
