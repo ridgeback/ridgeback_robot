@@ -2,6 +2,13 @@
 Changelog for package ridgeback_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Use eval + find to properly load the default mag config file
+* Added RIDGEBACK_MAG_CONFIG to madgwick filter and set a default optenv
+* Removed env-hooks
+* Contributors: Chris Iverach-Brereton, Dave Niewinski
+
 0.2.4 (2019-11-22)
 ------------------
 * Merge pull request `#26 <https://github.com/ridgeback/ridgeback_robot/issues/26>`_ from ridgeback/RPSW-119
