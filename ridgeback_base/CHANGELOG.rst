@@ -2,8 +2,8 @@
 Changelog for package ridgeback_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.2.5 (2020-10-19)
+------------------
 * Use eval + find to properly load the default mag config file
 * Added RIDGEBACK_MAG_CONFIG to madgwick filter and set a default optenv
 * Removed env-hooks
