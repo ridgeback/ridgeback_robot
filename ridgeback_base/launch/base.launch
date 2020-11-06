@@ -4,7 +4,7 @@
   <node pkg="rosserial_python" type="message_info_service.py" name="rosserial_message_info" />
 
   <node pkg="imu_filter_madgwick" type="imu_filter_node" name="imu_filter">
-    <rosparam file="$(eval optenv('RIDGEBACK_MAG_CONFIG', find('ridgeback_base')+'config/mag_config_default.yaml'))" />
+    <rosparam file="$(eval optenv('RIDGEBACK_MAG_CONFIG', find('ridgeback_base')+'/config/mag_config_default.yaml'))" />
     <rosparam>
       gain: 0.1
       zeta: 0.001
