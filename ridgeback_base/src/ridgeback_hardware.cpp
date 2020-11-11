@@ -65,7 +65,7 @@ RidgebackHardware::RidgebackHardware(ros::NodeHandle& nh, ros::NodeHandle& pnh,
     velocity_joint_interface_.registerHandle(joint_handle);
 
     puma_motor_driver::Driver driver(gateway_, joint_canids[i], joint_names[i]);
-    driver.clearStatusCache();
+    driver.clearMsgCache();
     driver.setEncoderCPR(encoder_cpr_);
     driver.setGearRatio(gear_ratio_ * joint_directions[i]);
     driver.setMode(puma_motor_msgs::Status::MODE_SPEED, GAIN_P, GAIN_I, GAIN_D);
@@ -97,26 +97,30 @@ void RidgebackHardware::updateJointsFromHardware()
   }
 }
 
+bool RidgebackHardware::areAllDriversActive()
+{
+  for (auto& driver : drivers_)
+  {
+    if (!driver.isConfigured())
+    {
+      return false;
+    }
+  }
+  return true;
+}
+
 bool RidgebackHardware::isActive()
 {
-  if (active_ == false
-     && drivers_[0].isConfigured() == true
-     && drivers_[1].isConfigured() == true
-     && drivers_[2].isConfigured() == true
-     && drivers_[3].isConfigured() == true)
+  if (!active_ && areAllDriversActive())
   {
     active_ = true;
     multi_driver_node_->activePublishers(active_);
-    ROS_INFO("Ridgeback Hardware Active.");
+    ROS_INFO("Ridgeback Hardware: Active.");
   }
-  else if ((drivers_[0].isConfigured() == false
-    || drivers_[1].isConfigured() == false
-    || drivers_[2].isConfigured() == false
-    || drivers_[3].isConfigured() == false)
-    && active_ == true)
+  else if (active_ && !areAllDriversActive())
   {
     active_ = false;
-    ROS_WARN("Ridgeback Hardware Inactive.");
+    ROS_WARN("Ridgeback Hardware: Inactive.");
   }
 
   return active_;
@@ -137,7 +141,9 @@ void RidgebackHardware::powerHasNotReset()
     if (driver.lastPower() != 0)
     {
       active_ = false;
-      ROS_WARN("Ridgeback Hardware: Power rest on puma motor controller located on the %s(%d), will reconfigure all drivers.", driver.deviceName().c_str(), driver.deviceNumber());
+      ROS_WARN(
+          "Ridgeback Hardware: Power rest on puma motor controller located on the %s(%d), will reconfigure all drivers."
+          , driver.deviceName().c_str(), driver.deviceNumber());
       multi_driver_node_->activePublishers(active_);
       for (auto& driver : drivers_)
       {
@@ -181,16 +187,11 @@ void RidgebackHardware::canRead()
   puma_motor_driver::Message recv_msg;
   while (gateway_.recv(&recv_msg))
   {
-    BOOST_FOREACH(puma_motor_driver::Driver& driver, drivers_)
+    for (auto& driver : drivers_)
     {
       driver.processMessage(recv_msg);
     }
   }
-}
-
-void RidgebackHardware::canSend()
-{
-  gateway_.sendAllQueued();
 }
 
 bool RidgebackHardware::connectIfNotConnected()
@@ -199,12 +200,12 @@ bool RidgebackHardware::connectIfNotConnected()
   {
     if (!gateway_.connect())
     {
-      ROS_ERROR("Error connecting to motor driver gateway. Retrying in 1 second.");
+      ROS_ERROR("Ridgeback Hardware: Error connecting to motor driver gateway. Retrying in 1 second.");
       return false;
     }
     else
     {
-      ROS_INFO("Connection to motor driver gateway successful.");
+      ROS_INFO("Ridgeback Hardware: Connection to motor driver gateway successful.");
     }
   }
   return true;

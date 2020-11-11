@@ -75,8 +75,6 @@ void controlThread(ros::Rate rate, ridgeback_base::RidgebackHardware* robot, con
       robot->configure();
     }
 
-    robot->canSend();
-
     cm->update(ros::Time::now(), elapsed, robot->inReset());
 
     if (robot->isActive())

@@ -63,6 +63,7 @@ public:
   void configure();  // Configures the motor drivers
   void verify();
   bool isActive();
+  bool areAllDriversActive();
 
   void powerHasNotReset();  // Checks if power has been reset
   bool inReset();  // Returns if the cm should be reset based on the state of the motors drivers.
@@ -70,8 +71,6 @@ public:
   void requestData();
   void updateJointsFromHardware();
   void command();
-
-  void canSend();
   void canRead();
 
 private:
