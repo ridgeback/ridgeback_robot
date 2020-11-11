@@ -57,7 +57,7 @@ void controlThread(ros::Rate rate, ridgeback_base::RidgebackHardware* robot, con
 {
   std::chrono::steady_clock::time_point last_time = std::chrono::steady_clock::now();
 
-  while (1)
+  while (ros::ok())
   {
     // Calculate monotonic time elapsed
     std::chrono::steady_clock::time_point this_time = std::chrono::steady_clock::now();
@@ -89,14 +89,13 @@ void controlThread(ros::Rate rate, ridgeback_base::RidgebackHardware* robot, con
       robot->verify();
     }
 
-    robot->canSend();
     rate.sleep();
   }
 }
 
 void canReadThread(ros::Rate rate, ridgeback_base::RidgebackHardware* robot)
 {
-  while (1)
+  while (ros::ok())
   {
     robot->canRead();
     rate.sleep();
