@@ -39,10 +39,6 @@
 namespace ridgeback_base
 {
 
-const double RidgebackCooling::LINEAR_VEL_THRESHOLD = 0.1;  // m/s
-const double RidgebackCooling::ANGULAR_VEL_THRESHOLD = 0.4;  // rad/s
-const double RidgebackCooling::MOITON_COMMAND_TIMEOUT = 3.0;  // Seconds.
-
 RidgebackCooling::RidgebackCooling(ros::NodeHandle* nh) :
   nh_(nh),
   charger_disconnected_(true)
@@ -54,7 +50,7 @@ RidgebackCooling::RidgebackCooling(ros::NodeHandle* nh) :
 
   cmd_fans_timer_ = nh_->createTimer(ros::Duration(1.0/10), &RidgebackCooling::cmdFansCallback, this);
 
-  for (int i = 0; i < 6; i++)
+  for (std::size_t i = 0; i < 6; i++)
   {
     cmd_fans_msg_.fans[i] = ridgeback_msgs::Fans::FAN_ON_LOW;
   }
@@ -81,7 +77,7 @@ void RidgebackCooling::cmdVelCallback(const geometry_msgs::Twist::ConstPtr& twis
       fabs(twist->linear.y) >= LINEAR_VEL_THRESHOLD ||
       fabs(twist->angular.z) >= ANGULAR_VEL_THRESHOLD)
   {
-    for (int i = 0; i < 6; i++)
+    for (std::size_t i = 0; i < 6; i++)
     {
       cmd_fans_msg_.fans[i] = ridgeback_msgs::Fans::FAN_ON_HIGH;
     }
@@ -93,7 +89,7 @@ void RidgebackCooling::cmdFansCallback(const ros::TimerEvent&)
 {
   if ((ros::Time::now().toSec() - last_motion_cmd_time_ > MOITON_COMMAND_TIMEOUT) && charger_disconnected_)
   {
-    for (int i = 0; i < 6; i++)
+    for (std::size_t i = 0; i < 6; i++)
     {
       cmd_fans_msg_.fans[i] = ridgeback_msgs::Fans::FAN_ON_LOW;
     }
