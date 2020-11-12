@@ -2,6 +2,12 @@
 Changelog for package ridgeback_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Bump CMake version to avoid CMP0048 warning.
+* [ridgeback_base] Fixed missing forward slash.
+* Contributors: Tony Baltovski
+
 0.2.5 (2020-10-19)
 ------------------
 * Use eval + find to properly load the default mag config file

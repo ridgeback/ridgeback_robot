@@ -2,6 +2,11 @@
 Changelog for package ridgeback_robot
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Bump CMake version to avoid CMP0048 warning.
+* Contributors: Tony Baltovski
+
 0.2.5 (2020-10-19)
 ------------------
 
