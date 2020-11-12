@@ -2,8 +2,8 @@
 Changelog for package ridgeback_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.2.6 (2020-11-12)
+------------------
 * Bump CMake version to avoid CMP0048 warning.
 * [ridgeback_base] Fixed missing forward slash.
 * Contributors: Tony Baltovski
