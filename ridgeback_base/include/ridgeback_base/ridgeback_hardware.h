@@ -35,11 +35,10 @@
 #ifndef RIDGEBACK_BASE_RIDGEBACK_HARDWARE_H
 #define RIDGEBACK_BASE_RIDGEBACK_HARDWARE_H
 
+#include <memory>
+#include <string>
 #include <vector>
 
-#include "boost/thread.hpp"
-#include "boost/foreach.hpp"
-#include "boost/shared_ptr.hpp"
 #include "hardware_interface/joint_state_interface.h"
 #include "hardware_interface/joint_command_interface.h"
 #include "hardware_interface/robot_hw.h"
@@ -64,6 +63,7 @@ public:
   void configure();  // Configures the motor drivers
   void verify();
   bool isActive();
+  bool areAllDriversActive();
 
   void powerHasNotReset();  // Checks if power has been reset
   bool inReset();  // Returns if the cm should be reset based on the state of the motors drivers.
@@ -71,8 +71,6 @@ public:
   void requestData();
   void updateJointsFromHardware();
   void command();
-
-  void canSend();
   void canRead();
 
 private:
@@ -80,11 +78,16 @@ private:
 
   puma_motor_driver::Gateway& gateway_;
   std::vector<puma_motor_driver::Driver> drivers_;
-  boost::shared_ptr<puma_motor_driver::MultiDriverNode> multi_driver_node_;
+  std::shared_ptr<puma_motor_driver::MultiDriverNode> multi_driver_node_;
 
   bool active_;
   double gear_ratio_;
   int encoder_cpr_;
+
+  // PID constants
+  static constexpr auto GAIN_P = 0.1;
+  static constexpr auto GAIN_I = 0.01;
+  static constexpr auto GAIN_D = 0.0;
 
   // ROS Control interfaces
   hardware_interface::JointStateInterface joint_state_interface_;

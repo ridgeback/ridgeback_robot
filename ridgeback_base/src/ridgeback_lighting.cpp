@@ -144,7 +144,7 @@ void RidgebackLighting::setRGB(ridgeback_msgs::RGB* rgb, uint32_t colour)
 
 void RidgebackLighting::setLights(ridgeback_msgs::Lights* lights, uint32_t pattern[8])
 {
-  for (int i = 0; i < 8; i++)
+  for (std::size_t i = 0; i < 8; i++)
   {
     setRGB(&lights->lights[i], pattern[i]);
   }
@@ -257,56 +257,56 @@ void RidgebackLighting::updatePattern()
       {
         current_pattern_count_ = 0;
       }
-      memcpy(&current_pattern_, &patterns_.stopped[current_pattern_count_], sizeof(current_pattern_));
+      std::memcpy(&current_pattern_, &patterns_.stopped[current_pattern_count_], sizeof(current_pattern_));
       break;
     case States::Fault:
       if (current_pattern_count_ >= patterns_.fault.size())
       {
         current_pattern_count_ = 0;
       }
-      memcpy(&current_pattern_, &patterns_.fault[current_pattern_count_], sizeof(current_pattern_));
+      std::memcpy(&current_pattern_, &patterns_.fault[current_pattern_count_], sizeof(current_pattern_));
       break;
     case States::NeedsReset:
       if (current_pattern_count_ >= patterns_.reset.size())
       {
         current_pattern_count_ = 0;
       }
-      memcpy(&current_pattern_, &patterns_.reset[current_pattern_count_], sizeof(current_pattern_));
+      std::memcpy(&current_pattern_, &patterns_.reset[current_pattern_count_], sizeof(current_pattern_));
       break;
     case States::LowBattery:
       if (current_pattern_count_ >= patterns_.low_battery.size())
       {
         current_pattern_count_ = 0;
       }
-      memcpy(&current_pattern_, &patterns_.low_battery[current_pattern_count_], sizeof(current_pattern_));
+      std::memcpy(&current_pattern_, &patterns_.low_battery[current_pattern_count_], sizeof(current_pattern_));
       break;
     case States::Charged:
       if (current_pattern_count_ >= patterns_.charged.size())
       {
         current_pattern_count_ = 0;
       }
-      memcpy(&current_pattern_, &patterns_.charged[current_pattern_count_], sizeof(current_pattern_));
+      std::memcpy(&current_pattern_, &patterns_.charged[current_pattern_count_], sizeof(current_pattern_));
       break;
     case States::Charging:
       if (current_pattern_count_ >= patterns_.charging.size())
       {
         current_pattern_count_ = 0;
       }
-      memcpy(&current_pattern_, &patterns_.charging[current_pattern_count_], sizeof(current_pattern_));
+      std::memcpy(&current_pattern_, &patterns_.charging[current_pattern_count_], sizeof(current_pattern_));
       break;
     case States::Driving:
       if (current_pattern_count_ >= patterns_.driving.size())
       {
         current_pattern_count_ = 0;
       }
-      memcpy(&current_pattern_, &patterns_.driving[current_pattern_count_], sizeof(current_pattern_));
+      std::memcpy(&current_pattern_, &patterns_.driving[current_pattern_count_], sizeof(current_pattern_));
       break;
     case States::Idle:
       if (current_pattern_count_ >= patterns_.idle.size())
       {
         current_pattern_count_ = 0;
       }
-      memcpy(&current_pattern_, &patterns_.idle[current_pattern_count_], sizeof(current_pattern_));
+      std::memcpy(&current_pattern_, &patterns_.idle[current_pattern_count_], sizeof(current_pattern_));
       break;
   }
   old_state_ = state_;

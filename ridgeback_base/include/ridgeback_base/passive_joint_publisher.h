@@ -34,8 +34,8 @@
 #ifndef RIDGEBACK_BASE_PASSIVE_JOINT_PUBLISHER_H
 #define RIDGEBACK_BASE_PASSIVE_JOINT_PUBLISHER_H
 
-#include "ros/ros.h"
-#include "sensor_msgs/JointState.h"
+#include <ros/ros.h>
+#include <sensor_msgs/JointState.h>
 
 namespace ridgeback_base
 {
@@ -43,16 +43,16 @@ namespace ridgeback_base
 class PassiveJointPublisher
 {
 public:
-  PassiveJointPublisher(ros::NodeHandle& nh, ros::V_string& joints, int frequency)
+  PassiveJointPublisher(ros::NodeHandle& nh, const ros::V_string& joints, const double frequency)
   {
-    for (int i = 0; i < joints.size(); i++)
+    for (std::size_t i = 0; i < joints.size(); i++)
     {
       msg_.name.push_back(joints[i]);
       msg_.position.push_back(0);
       msg_.velocity.push_back(0);
       msg_.effort.push_back(0);
     }
-    pub_ = nh.advertise<sensor_msgs::JointState>("/joint_states", 1);
+    pub_ = nh.advertise<sensor_msgs::JointState>("joint_states", 1);
     timer_ = nh.createTimer(ros::Duration(1.0/frequency), &PassiveJointPublisher::timerCb, this);
   }
 

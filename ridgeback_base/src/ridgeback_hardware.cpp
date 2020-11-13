@@ -33,8 +33,6 @@
  */
 
 #include <vector>
-#include "boost/assign.hpp"
-#include "boost/shared_ptr.hpp"
 #include "ridgeback_base/ridgeback_hardware.h"
 #include "puma_motor_driver/driver.h"
 #include "puma_motor_driver/multi_driver_node.h"
@@ -52,12 +50,11 @@ RidgebackHardware::RidgebackHardware(ros::NodeHandle& nh, ros::NodeHandle& pnh,
   pnh_.param<double>("gear_ratio", gear_ratio_, 34.97);
   pnh_.param<int>("encoder_cpr", encoder_cpr_, 1024);
 
-  ros::V_string joint_names = boost::assign::list_of("front_left_wheel")
-      ("front_right_wheel")("rear_left_wheel")("rear_right_wheel");
-  std::vector<uint8_t> joint_canids = boost::assign::list_of(5)(4)(2)(3);
-  std::vector<float> joint_directions = boost::assign::list_of(-1)(1)(-1)(1);
+  const ros::V_string joint_names = {"front_left_wheel", "front_right_wheel", "rear_left_wheel", "rear_right_wheel"};
+  const std::vector<uint8_t> joint_canids =  {5, 4, 2, 3};
+  const std::vector<float> joint_directions = {-1, 1, -1, 1};
 
-  for (uint8_t i = 0; i < joint_names.size(); i++)
+  for (std::size_t i = 0; i < joint_names.size(); i++)
   {
     hardware_interface::JointStateHandle joint_state_handle(joint_names[i],
         &joints_[i].position, &joints_[i].velocity, &joints_[i].effort);
@@ -68,10 +65,10 @@ RidgebackHardware::RidgebackHardware(ros::NodeHandle& nh, ros::NodeHandle& pnh,
     velocity_joint_interface_.registerHandle(joint_handle);
 
     puma_motor_driver::Driver driver(gateway_, joint_canids[i], joint_names[i]);
-    driver.clearStatusCache();
+    driver.clearMsgCache();
     driver.setEncoderCPR(encoder_cpr_);
     driver.setGearRatio(gear_ratio_ * joint_directions[i]);
-    driver.setMode(puma_motor_msgs::Status::MODE_SPEED, 0.1, 0.01, 0.0);
+    driver.setMode(puma_motor_msgs::Status::MODE_SPEED, GAIN_P, GAIN_I, GAIN_D);
     drivers_.push_back(driver);
   }
 
@@ -90,7 +87,7 @@ RidgebackHardware::RidgebackHardware(ros::NodeHandle& nh, ros::NodeHandle& pnh,
 void RidgebackHardware::updateJointsFromHardware()
 {
   uint8_t index = 0;
-  BOOST_FOREACH(puma_motor_driver::Driver& driver, drivers_)
+  for (auto& driver : drivers_)
   {
     Joint* f = &joints_[index];
     f->effort = driver.lastCurrent();
@@ -100,26 +97,30 @@ void RidgebackHardware::updateJointsFromHardware()
   }
 }
 
+bool RidgebackHardware::areAllDriversActive()
+{
+  for (auto& driver : drivers_)
+  {
+    if (!driver.isConfigured())
+    {
+      return false;
+    }
+  }
+  return true;
+}
+
 bool RidgebackHardware::isActive()
 {
-  if (active_ == false
-     && drivers_[0].isConfigured() == true
-     && drivers_[1].isConfigured() == true
-     && drivers_[2].isConfigured() == true
-     && drivers_[3].isConfigured() == true)
+  if (!active_ && areAllDriversActive())
   {
     active_ = true;
     multi_driver_node_->activePublishers(active_);
-    ROS_INFO("Ridgeback Hardware Active.");
+    ROS_INFO("Ridgeback Hardware: Active.");
   }
-  else if ((drivers_[0].isConfigured() == false
-    || drivers_[1].isConfigured() == false
-    || drivers_[2].isConfigured() == false
-    || drivers_[3].isConfigured() == false)
-    && active_ == true)
+  else if (active_ && !areAllDriversActive())
   {
     active_ = false;
-    ROS_WARN("Ridgeback Hardware Inactive.");
+    ROS_WARN("Ridgeback Hardware: Inactive.");
   }
 
   return active_;
@@ -127,7 +128,7 @@ bool RidgebackHardware::isActive()
 
 void RidgebackHardware::requestData()
 {
-  BOOST_FOREACH(puma_motor_driver::Driver& driver, drivers_)
+  for (auto& driver : drivers_)
   {
     driver.requestFeedbackPowerState();
   }
@@ -135,14 +136,16 @@ void RidgebackHardware::requestData()
 void RidgebackHardware::powerHasNotReset()
 {
   // Checks to see if power flag has been reset for each driver
-  BOOST_FOREACH(puma_motor_driver::Driver& driver, drivers_)
+  for (auto& driver : drivers_)
   {
     if (driver.lastPower() != 0)
     {
       active_ = false;
-      ROS_WARN("There was a power rest on Dev: %d, will reconfigure all drivers.", driver.deviceNumber());
+      ROS_WARN(
+          "Ridgeback Hardware: Power rest on puma motor controller located on the %s(%d), will reconfigure all drivers."
+          , driver.deviceName().c_str(), driver.deviceNumber());
       multi_driver_node_->activePublishers(active_);
-      BOOST_FOREACH(puma_motor_driver::Driver& driver, drivers_)
+      for (auto& driver : drivers_)
       {
         driver.resetConfiguration();
       }
@@ -152,14 +155,14 @@ void RidgebackHardware::powerHasNotReset()
 
 void RidgebackHardware::configure()
 {
-  BOOST_FOREACH(puma_motor_driver::Driver& driver, drivers_)
+  for (auto& driver : drivers_)
   {
     driver.configureParams();
   }
 }
 void RidgebackHardware::verify()
 {
-  BOOST_FOREACH(puma_motor_driver::Driver& driver, drivers_)
+  for (auto& driver : drivers_)
   {
     driver.verifyParams();
   }
@@ -184,16 +187,11 @@ void RidgebackHardware::canRead()
   puma_motor_driver::Message recv_msg;
   while (gateway_.recv(&recv_msg))
   {
-    BOOST_FOREACH(puma_motor_driver::Driver& driver, drivers_)
+    for (auto& driver : drivers_)
     {
       driver.processMessage(recv_msg);
     }
   }
-}
-
-void RidgebackHardware::canSend()
-{
-  gateway_.sendAllQueued();
 }
 
 bool RidgebackHardware::connectIfNotConnected()
@@ -202,12 +200,12 @@ bool RidgebackHardware::connectIfNotConnected()
   {
     if (!gateway_.connect())
     {
-      ROS_ERROR("Error connecting to motor driver gateway. Retrying in 1 second.");
+      ROS_ERROR("Ridgeback Hardware: Error connecting to motor driver gateway. Retrying in 1 second.");
       return false;
     }
     else
     {
-      ROS_INFO("Connection to motor driver gateway successful.");
+      ROS_INFO("Ridgeback Hardware: Connection to motor driver gateway successful.");
     }
   }
   return true;
@@ -221,7 +219,7 @@ bool RidgebackHardware::connectIfNotConnected()
 void RidgebackHardware::command()
 {
   uint8_t i = 0;
-  BOOST_FOREACH(puma_motor_driver::Driver& driver, drivers_)
+  for (auto& driver : drivers_)
   {
     driver.commandSpeed(joints_[i].velocity_command);
     i++;
