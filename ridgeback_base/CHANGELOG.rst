@@ -2,8 +2,8 @@
 Changelog for package ridgeback_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.3.0 (2020-11-12)
+------------------
 * [ridgeback_base] Added dependency.
 * [ridgeback_base] Updated to use new functions from puma_motor_drivers.
 * [ridgeback_base] Used ros::ok() for while condition on thread loops.

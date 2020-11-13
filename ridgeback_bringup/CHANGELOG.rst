@@ -2,8 +2,8 @@
 Changelog for package ridgeback_bringup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.3.0 (2020-11-12)
+------------------
 * [ridgeback_bringup] Increased CAN TX queue size.
 * Contributors: Tony Baltovski
 
