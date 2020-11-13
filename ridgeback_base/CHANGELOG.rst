@@ -2,6 +2,14 @@
 Changelog for package ridgeback_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* [ridgeback_base] Added dependency.
+* [ridgeback_base] Updated to use new functions from puma_motor_drivers.
+* [ridgeback_base] Used ros::ok() for while condition on thread loops.
+* Updates for C++11.
+* Contributors: Tony Baltovski
+
 0.2.6 (2020-11-12)
 ------------------
 * Bump CMake version to avoid CMP0048 warning.

@@ -2,6 +2,11 @@
 Changelog for package ridgeback_bringup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* [ridgeback_bringup] Increased CAN TX queue size.
+* Contributors: Tony Baltovski
+
 0.2.6 (2020-11-12)
 ------------------
 * Bump CMake version to avoid CMP0048 warning.
