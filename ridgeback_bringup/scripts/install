@@ -11,6 +11,8 @@ main_job.add(package="ridgeback_base", filename="launch/base.launch")
 main_job.add(package="ridgeback_bringup", filename="launch/accessories.launch")
 main_job.install()
 
+# Wait to for can-udp-bridge to be up before starting ROS
+os.system("sudo sed -i '/After/c After=can-udp-bridge.service' /lib/systemd/system/ros.service")
 
 class RidgebackExtras(robot_upstart.providers.Generic):
     def post_install(self):
@@ -21,7 +23,7 @@ class RidgebackExtras(robot_upstart.providers.Generic):
             can_conf_contents = f.read()
         with open(find_in_workspaces(project="ridgeback_bringup", path="can-udp-bridge.sh")[0]) as f:
             can_sh_contents = f.read()
-        return { 
+        return {
             "/lib/systemd/system/can-udp-bridge.service": {
                 "content": can_conf_contents,
                 "mode": 0o644
