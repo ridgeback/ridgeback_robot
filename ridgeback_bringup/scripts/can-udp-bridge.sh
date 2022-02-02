@@ -5,4 +5,4 @@ slcand -o -c -F -s8 /dev/ttycan0 can0 &
 sleep 1
 ip link set can0 txqueuelen 100
 sleep 1
-ip link set dev can0 up
+ip link set can0 up
