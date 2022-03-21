@@ -2,8 +2,8 @@
 Changelog for package ridgeback_bringup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.4.1 (2022-03-21)
+------------------
 * [ridgeback_bringup] Updated install script to explicitly use Python3.
 * Change the can-udp-bringup to use ip instead of ifconfig (`#35 <https://github.com/ridgeback/ridgeback_robot/issues/35>`_)
   * Change the can-udp-bringup to use ip instead of ifconfig
