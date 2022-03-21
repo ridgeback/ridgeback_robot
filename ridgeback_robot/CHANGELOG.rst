@@ -2,6 +2,9 @@
 Changelog for package ridgeback_robot
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.4.0 (2022-01-15)
 ------------------
 
