@@ -17,6 +17,7 @@
 
   <exec_depend>ridgeback_bringup</exec_depend>
   <exec_depend>ridgeback_firmware</exec_depend>
+  <exec_depend>ridgeback_tests</exec_depend>
 
   <export>
     <metapackage />
