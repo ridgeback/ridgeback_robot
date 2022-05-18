@@ -2,6 +2,12 @@
 Changelog for package ridgeback_robot
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add dependency for ridgeback_tests (`#36 <https://github.com/ridgeback/ridgeback_robot/issues/36>`_)
+  This PR should only be merged once the test package is released.
+* Contributors: Joey Yang
+
 0.4.1 (2022-03-21)
 ------------------
 
