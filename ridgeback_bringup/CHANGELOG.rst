@@ -2,8 +2,8 @@
 Changelog for package ridgeback_bringup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.3.2 (2022-05-17)
+------------------
 * Change the can-udp-bringup to use ip instead of ifconfig (`#35 <https://github.com/ridgeback/ridgeback_robot/issues/35>`_)
   * Change the can-udp-bringup to use ip instead of ifconfig
   * Fix the txqueue length
