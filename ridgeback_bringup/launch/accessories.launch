@@ -77,7 +77,7 @@ in the URDF. See ridgeback_description/urdf/accessories.urdf.xacro.
     </node>
   </group>
 
-  <!-- Microstrain IMU: GX3, GX5, GX25, etc. -->
+  <!-- Support for current Microstrain IMU models, including GX3, GX5, GX25, etc. -->
   <group if="$(optenv RIDGEBACK_IMU_MICROSTRAIN 0)">
     <include file="$(find microstrain_inertial_driver)/launch/microstrain.launch">
       <arg name="namespace"              value="$(optenv RIDGEBACK_IMU_MICROSTRAIN_NAME microstrain)" />
