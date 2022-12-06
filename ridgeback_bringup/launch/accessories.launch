@@ -64,6 +64,7 @@ in the URDF. See ridgeback_description/urdf/accessories.urdf.xacro.
     </node>
   </group>
 
+  <!-- Legacy support for Microstrain IMU GX2 -->
   <group if="$(optenv RIDGEBACK_MICROSTRAIN_IMU 0)">
     <node pkg="microstrain_3dmgx2_imu" type="imu_node" name="microstrain_imu">
       <param name="time_offset" value="-0.040" />
@@ -74,5 +75,14 @@ in the URDF. See ridgeback_description/urdf/accessories.urdf.xacro.
       <param name="max_drift_rate" value="0.001" />
       <remap from="imu" to="$(optenv RIDGEBACK_MICROSTRAIN_IMU_TOPIC upgraded)_imu" />
     </node>
+  </group>
+
+  <!-- Support for current Microstrain IMU models, including GX3, GX5, GX25, etc. -->
+  <group if="$(optenv RIDGEBACK_IMU_MICROSTRAIN 0)">
+    <include file="$(find microstrain_inertial_driver)/launch/microstrain.launch">
+      <arg name="namespace"              value="$(optenv RIDGEBACK_IMU_MICROSTRAIN_NAME microstrain)" />
+      <arg name="node_name"              value="microstrain_inertial_driver" />
+      <arg name="params_file"            value="$(find ridgeback_bringup)/config/microstrain.yaml" />
+    </include>
   </group>
 </launch>
