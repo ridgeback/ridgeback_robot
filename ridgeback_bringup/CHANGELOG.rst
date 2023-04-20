@@ -2,6 +2,14 @@
 Changelog for package ridgeback_bringup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add microstrain_inertial_driver to support current Microstrain IMU models (`#37 <https://github.com/ridgeback/ridgeback_robot/issues/37>`_)
+  * Add microstrain_inertial_driver for supporting current Microstrain IMU models.
+  * Remove accidental copy
+  * Clearer comments for RIDGEBACK_IMU_MICROSTRAIN.
+* Contributors: Joey Yang
+
 0.4.2 (2022-05-17)
 ------------------
 
